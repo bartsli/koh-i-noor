@@ -1,0 +1,208 @@
+================================================================================
+ŹRÓDŁO PRAWDY: KOH-I-NOOR POLYCOLOR 144 KOLORÓW
+================================================================================
+
+Jedyne oficjalne źródło prawdy dla numerów i nazw kolorów kredek Polycolor.
+Źródło: obrazki katalogowe polycolor_3800_1.jpg, polycolor_3800_2.jpg, polycolor_3800_3.jpg
+
+Kolejność kolorów zgodna z kolejnością w katalogu (od lewej do prawej, od góry do dołu).
+
+================================================================================
+OBRAZEK 1/3 (48 kolorów)
+================================================================================
+
+Rząd 1 (Whites and Yellows):
+  1. 3800/01  - Titanium White
+  2. 3800/500 - Ivory Bone
+  3. 3800/550 - Fair Portrait Gold
+  4. 3800/501 - Pollen Yellow
+  5. 3800/41  - Banana Yellow
+  6. 3800/504 - Lemon Yellow
+  7. 3800/03  - Chrome Yellow
+  8. 3800/801 - Yellow Ochre
+
+Rząd 2 (Oranges and Yellows):
+  9. 3800/28  - Gold Ochre
+ 10. 3800/555 - Papaya Orange
+ 11. 3800/556 - Amber Orange
+ 12. 3800/557 - Tangerine Orange
+ 13. 3800/45  - Light Orange
+ 14. 3800/44  - Naples Yellow
+ 15. 3800/42  - Chromium Orange
+ 16. 3800/558 - Fire Orange
+
+Rząd 3 (Oranges and Reds):
+ 17. 3800/126 - Persian Orange
+ 18. 3800/05  - Reddish Orange
+ 19. 3800/559 - Portland Orange
+ 20. 3800/560 - Dark Salmon Orange
+ 21. 3800/06  - Vermilion Red
+ 22. 3800/600 - Light Scarlet Red
+ 23. 3800/170 - Pyrrole Red
+ 24. 3800/606 - Dark Vermilion Red
+
+Rząd 4 (Reds and Pinks):
+ 25. 3800/601 - Scarlet Red
+ 26. 3800/602 - Currant Red
+ 27. 3800/132 - Carmine Red
+ 28. 3800/603 - Wine Red
+ 29. 3800/605 - Burgundy Red
+ 30. 3800/653 - Mexican Pink
+ 31. 3800/131 - French Pink
+ 32. 3800/609 - Antique Rose
+
+Rząd 5 (Reds, Pinks, and Oranges):
+ 33. 3800/604 - Coral Red
+ 34. 3800/610 - Light Carmine Red
+ 35. 3800/607 - Punch Pink
+ 36. 3800/608 - Light French Pink
+ 37. 3800/352 - Blush Pink
+ 38. 3800/355 - Peach Orange
+ 39. 3800/354 - Salmon Pink
+ 40. 3800/357 - Apricot Orange
+
+Rząd 6 (Browns, Skin Tones, and Pinks):
+ 41. 3800/821 - Almond Brown
+ 42. 3800/553 - Portrait Sand
+ 43. 3800/350 - Portrait Peach
+ 44. 3800/554 - Portrait Honey
+ 45. 3800/552 - Portrait Light
+ 46. 3800/551 - Portrait Fair
+ 47. 3800/351 - Light Portrait Pink
+ 48. 3800/353 - Amaranth Pink
+
+================================================================================
+OBRAZEK 2/3 (48 kolorów)
+================================================================================
+
+Rząd 1 (Purples and Reds):
+ 49. 3800/651 - Orchid Purple
+ 50. 3800/178 - Reddish Violet
+ 51. 3800/654 - Dark Reddish Violet
+ 52. 3800/655 - Byzantium Purple
+ 53. 3800/177 - Lilac Violet
+ 54. 3800/08  - Bordeaux Red
+ 55. 3800/650 - Fig Purple
+ 56. 3800/182 - Dark Violet
+
+Rząd 2 (Violets and Blues):
+ 57. 3800/180 - Dark Lavender Violet
+ 58. 3800/13  - Lavender Violet
+ 59. 3800/179 - Bluish Violet
+ 60. 3800/181 - Windsor Violet
+ 61. 3800/700 - Midnight Blue
+ 62. 3800/17  - Cobalt Blue
+ 63. 3800/56  - Indigo Blue
+ 64. 3800/55  - Permanent Blue
+
+Rząd 3 (Blues):
+ 65. 3800/704 - Navy Blue
+ 66. 3800/19  - Sapphire Blue
+ 67. 3800/705 - Sea Blue
+ 68. 3800/54  - Dark Cobalt Blue
+ 69. 3800/701 - Dark Azure Blue
+ 70. 3800/53  - Phthalo Blue
+ 71. 3800/52  - Dark Ice Blue
+ 72. 3800/18  - Light Blue
+
+Rząd 4 (Blues and Teals):
+ 73. 3800/20  - Prussian Blue
+ 74. 3800/57  - Mountain Blue
+ 75. 3800/702 - Azure Blue
+ 76. 3800/16  - Cerulean Blue
+ 77. 3800/703 - Dark Cerulean Blue
+ 78. 3800/15  - Ice Blue
+ 79. 3800/752 - Medium Turquoise
+ 80. 3800/751 - Teal Green
+
+Rząd 5 (Teals and Greens):
+ 81. 3800/750 - Royal Teal
+ 82. 3800/732 - Teal Blue
+ 83. 3800/731 - Dark Teal Blue
+ 84. 3800/772 - Deep Green
+ 85. 3800/26  - Dark Green
+ 86. 3800/775 - Avocado Green
+ 87. 3800/61  - Sap Green
+ 88. 3800/59  - Grass Green
+
+Rząd 6 (Greens):
+ 89. 3800/60  - Emerald Green
+ 90. 3800/21  - Bluish Green
+ 91. 3800/770 - Persian Green
+ 92. 3800/771 - Jade Green
+ 93. 3800/774 - Light Jade Green
+ 94. 3800/773 - Light Emerald Green
+ 95. 3800/24  - Pea Green
+ 96. 3800/58  - Light Green
+
+================================================================================
+OBRAZEK 3/3 (48 kolorów)
+================================================================================
+
+Rząd 1 (Greens/Yellows):
+ 97. 3800/23  - Spring Green
+ 98. 3800/22  - Yellowish Green
+ 99. 3800/502 - Lime Yellow
+100. 3800/503 - Chartreuse Yellow
+101. 3800/62  - Apple Green
+102. 3800/776 - Celadon Green
+103. 3800/25  - Meadow Green
+104. 3800/63  - Light Olive Green
+
+Rząd 2 (Greens/Browns/Ochres):
+105. 3800/27  - Dark Olive Green
+106. 3800/66  - Raw Umber
+107. 3800/802 - Dark Yellow Ochre
+108. 3800/29  - Light Ochre
+109. 3800/800 - Dark Gold Ochre
+110. 3800/803 - Yellow Brown Ochre
+111. 3800/804 - Brown Ochre
+112. 3800/823 - Sandstone Brown
+
+Rząd 3 (Browns/Terracottas):
+113. 3800/64  - Burnt Ochre
+114. 3800/824 - Cinnamon Brown
+115. 3800/825 - Burnt Sienna
+116. 3800/30  - Reddish Brown
+117. 3800/212 - Caput Mortuum
+118. 3800/65  - Medium Terracotta
+119. 3800/31  - Light Brown
+120. 3800/820 - Hazelnut Brown
+
+Rząd 4 (Browns/Metallics):
+121. 3800/32  - Natural Sienna
+122. 3800/33  - Dark Brown
+123. 3800/822 - Cafe Noir Brown
+124. 3800/214 - Dark Earth Brown
+125. 3800/68  - Burnt Umber
+126. 3800/75  - Standard Bronze
+127. 3800/40  - Standard Gold
+128. 3800/39  - Standard Silver
+
+Rząd 5 (Cool Greys):
+129. 3800/34  - Light Bluish Grey
+130. 3800/72  - Slate Grey
+131. 3800/71  - Medium Grey
+132. 3800/408 - Cool Grey 8
+133. 3800/406 - Cool Grey 6
+134. 3800/405 - Cool Grey 5
+135. 3800/403 - Cool Grey 3
+136. 3800/401 - Cool Grey 1
+
+Rząd 6 (Warm Greys/Black):
+137. 3800/451 - Warm Grey 1
+138. 3800/452 - Warm Grey 2
+139. 3800/453 - Warm Grey 3
+140. 3800/455 - Warm Grey 5
+141. 3800/456 - Warm Grey 6
+142. 3800/458 - Warm Grey 8
+143. 3800/36  - Ivory Black
+144. 3800/409 - Cool Grey 9
+
+================================================================================
+KONIEC LISTY - 144 KOLORY
+================================================================================
+
+UWAGA: To jest jedyne źródło prawdy dla numerów i nazw kolorów.
+Wszystkie inne pliki powinny być zgodne z tą listą.
+
