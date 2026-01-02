@@ -14,11 +14,21 @@ from reportlab.pdfbase.ttfonts import TTFont
 from PIL import Image
 import math
 import os
+import cv2
+import numpy as np
 
 from colors_72 import COLORS_72
 from colors_72_catalog import COLORS_72_CATALOG
 from colors_144_catalog import COLORS_144_CATALOG
 from colors_24_portrait import COLORS_24_PORTRAIT
+try:
+    from colors_72_2017 import COLORS_72_2017
+except ImportError:
+    COLORS_72_2017 = []
+try:
+    from colors_my_72 import COLORS_MY_72
+except ImportError:
+    COLORS_MY_72 = []
 
 # Polskie nazwy kolorów zgodne z nomenklaturą plastyczną
 # Źródło prawdy: ZESTAW_72_KOLOROW.txt i ZRODLO_PRAWDY_144_KOLOROW.txt
@@ -118,27 +128,37 @@ POLISH_NAMES = {
     552: "Jasność portretowa",
     553: "Piasek portretowy",
     554: "Miód portretowy",
-    555: "Pomarańcz papajowy",
-    556: "Pomarańcz bursztynowy",
-    557: "Pomarańcz mandarynkowy",
-    558: "Pomarańcz ognisty",
-    559: "Pomarańcz portlandzki",
-    560: "Pomarańcz łososiowy ciemny",
-    600: "Czerwień szkarłatna jasna",
-    602: "Czerwień porzeczkowa",
-    603: "Czerwień winna",
-    604: "Czerwień koralowa",
-    605: "Czerwień burgundzka",
-    606: "Czerwień cynobrowa ciemna",
-    607: "Róż ponczowy",
-    608: "Róż francuski jasny",
-    609: "Róż antyczny",
-    610: "Czerwień karminowa jasna",
-    650: "Fiolet figowy",
-    651: "Fiolet storczykowy",
-    653: "Róż meksykański",
-    654: "Fiolet czerwonawy ciemny",
-    655: "Fiolet bizantyjski",
+        504: "Żółć cytrynowa",
+        555: "Pomarańcz papajowy",
+        556: "Pomarańcz bursztynowy",
+        557: "Pomarańcz mandarynkowy",
+        558: "Pomarańcz ognisty",
+        559: "Pomarańcz portlandzki",
+        560: "Pomarańcz łososiowy ciemny",
+        357: "Pomarańcz morelowy",
+        600: "Czerwień szkarłatna jasna",
+        601: "Czerwień szkarłatna",
+        602: "Czerwień porzeczkowa",
+        603: "Czerwień winna",
+        604: "Czerwień koralowa",
+        605: "Czerwień burgundzka",
+        606: "Czerwień cynobrowa ciemna",
+        607: "Róż ponczowy",
+        608: "Róż francuski jasny",
+        609: "Róż antyczny",
+        610: "Czerwień karminowa jasna",
+        132: "Czerwień karminowa",
+        170: "Czerwień pirolowa",
+        13: "Fiolet lawendowy",
+        178: "Fiolet czerwonawy",
+        179: "Fiolet niebieskawy",
+        181: "Fiolet windsorski",
+        182: "Fiolet ciemny",
+        650: "Fiolet figowy",
+        651: "Fiolet storczykowy",
+        653: "Róż meksykański",
+        654: "Fiolet czerwonawy ciemny",
+        655: "Fiolet bizantyjski",
     700: "Błękit północny",
     701: "Błękit lazurowy ciemny",
     702: "Błękit lazurowy",
@@ -316,95 +336,96 @@ def get_color_for_pencil(num, color_name=None):
     # Użyj tylko przybliżonych wartości (mapowanie z nazw daje nieprawidłowe wyniki)
     # Kompletna mapa kolorów dla wszystkich kredek (przybliżone wartości RGB)
     color_map = {
-        # Białe / neutralne
-        1: (255, 255, 255),      # White
+        # Białe / neutralne - znormalizowane względem białego
+        1: (187, 174, 104),      # White - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         
-        # Żółcie
+        # Żółcie - poprawione wartości RGB dla lepszej wierności kolorów
         2: (255, 250, 100),      # Lemon Yellow
-        3: (255, 220, 50),       # Chrome Yellow
+        3: (187, 181, 122),      # Chrome Yellow - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         4: (220, 180, 40),       # Dark Yellow
-        41: (255, 237, 100),     # Banana Yellow
+        41: (190, 179, 81),      # Banana Yellow - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         43: (255, 245, 200),     # Naples Yellow Light
-        44: (255, 235, 150),     # Naples Yellow
+        44: (186, 149, 114),     # Naples Yellow - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         
-        # Pomarańcze
-        5: (255, 120, 60),       # Reddish Orange
+        # Pomarańcze - poprawione wartości RGB
+        5: (191, 145, 83),        # Reddish Orange - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         9: (255, 200, 150),      # Apricot Orange
-        42: (255, 140, 80),      # Chromium Orange
-        45: (255, 180, 120),     # Light Orange
+        42: (183, 135, 76),       # Chromium Orange - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        45: (184, 144, 104),      # Light Orange - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         46: (255, 130, 70),      # Cadmium Orange
         67: (255, 210, 130),     # Yellowish Orange
+        357: (176, 108, 141),    # Apricot Orange - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         
-        # Czerwienie / róże
-        6: (255, 60, 40),        # Vermillion Red
+        # Czerwienie / róże - poprawione wartości RGB
+        6: (186, 112, 86),        # Vermillion Red - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         7: (200, 20, 50),        # Carmine Red
-        8: (120, 20, 40),        # Bordeaux Red
+        8: (137, 110, 138),       # Bordeaux Red - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         10: (255, 180, 200),     # Persian Pink
-        47: (220, 30, 50),       # Scarlet Red
+        47: (255, 36, 0),        # Scarlet Red - szkarłatny
         48: (180, 20, 30),       # Scarlet Red Dark
-        76: (220, 40, 60),       # Pyrrole Red
+        76: (220, 20, 60),       # Pyrrole Red - intensywny czerwony
         
-        # Fiolety
-        11: (220, 180, 240),     # Light Violet
-        12: (200, 120, 200),     # Reddish Violet
-        13: (150, 80, 180),      # Medium Violet
-        14: (120, 100, 200),     # Bluish Violet
+        # Fiolety - poprawione wartości RGB
+        11: (230, 230, 250),     # Light Violet - lawendowy
+        12: (186, 85, 211),      # Reddish Violet - czerwonawy fiolet
+        13: (230, 230, 250),     # Lavender Violet - lawendowy
+        14: (138, 43, 226),      # Bluish Violet - niebieskawy fiolet
         49: (120, 80, 150),      # Permanent Violet
-        50: (100, 60, 140),      # Windsor Violet
-        51: (80, 40, 100),       # Dark Violet
+        50: (138, 43, 226),      # Windsor Violet - windsorski fiolet
+        51: (138, 43, 226),      # Dark Violet - ciemny fiolet
         
-        # Błękity
-        15: (200, 240, 255),     # Ice Blue
-        16: (100, 180, 220),     # Cerulean Blue
-        17: (50, 120, 200),      # Cobalt Blue
-        18: (150, 200, 255),     # Light Blue
-        19: (30, 80, 150),       # Sapphire Blue
-        20: (20, 40, 100),       # Prussian Blue
-        52: (80, 160, 240),      # Azure Blue
-        53: (30, 100, 180),      # Phthalo Blue
-        54: (40, 90, 160),       # Cobalt Blue Dark
-        55: (60, 140, 220),      # Permanent Blue
-        56: (40, 60, 140),       # Indigo Blue
-        57: (100, 180, 240),     # Mountain Blue
+        # Błękity - poprawione wartości RGB
+        15: (176, 224, 230),     # Ice Blue - lodowy
+        16: (0, 123, 167),        # Cerulean Blue - ceruleum
+        17: (0, 71, 171),         # Cobalt Blue - kobaltowy
+        18: (173, 216, 230),      # Light Blue - jasny niebieski
+        19: (8, 37, 103),         # Sapphire Blue - szafirowy
+        20: (0, 49, 83),          # Prussian Blue - pruski
+        52: (0, 123, 167),        # Dark Ice Blue - ciemny lodowy
+        53: (0, 15, 137),         # Phthalo Blue - ftalowy
+        54: (0, 51, 153),         # Cobalt Blue Dark - ciemny kobaltowy
+        55: (25, 25, 112),        # Permanent Blue - trwały niebieski
+        56: (75, 0, 130),         # Indigo Blue - indygo
+        57: (70, 130, 180),       # Mountain Blue - górski
         
-        # Zieleń
-        21: (60, 180, 160),      # Bluish Green
-        22: (180, 240, 100),     # Yellowish Green
-        23: (120, 240, 180),     # Spring Green
-        24: (140, 200, 80),      # Pea Green
-        25: (100, 200, 120),     # Meadow Green
-        26: (20, 100, 60),       # Dark Green
-        27: (100, 120, 60),      # Olive Green Dark
-        58: (160, 240, 160),      # Light Green
-        59: (80, 200, 100),      # Grass Green
-        60: (40, 220, 120),      # Emerald Green
-        61: (100, 180, 80),       # Sap Green
-        62: (120, 220, 100),      # Apple Green
-        63: (180, 200, 140),      # Olive Green Light
+        # Zieleń - poprawione wartości RGB
+        21: (0, 206, 209),        # Bluish Green - niebieskawa zieleń
+        22: (154, 205, 50),       # Yellowish Green - żółtawa zieleń
+        23: (0, 255, 127),        # Spring Green - wiosenna
+        24: (152, 251, 152),      # Pea Green - groszkowa
+        25: (50, 205, 50),        # Meadow Green - łąkowa
+        26: (0, 100, 0),          # Dark Green - ciemna zieleń
+        27: (85, 107, 47),        # Olive Green Dark - ciemna oliwkowa
+        58: (144, 238, 144),     # Light Green - jasna zieleń
+        59: (124, 252, 0),        # Grass Green - trawiasta
+        60: (0, 201, 87),         # Emerald Green - szmaragdowa
+        61: (80, 125, 42),        # Sap Green - sokowa zieleń
+        62: (141, 182, 0),        # Apple Green - jabłkowa
+        63: (107, 142, 35),       # Light Olive Green - jasna oliwkowa
         
-        # Brązy / ochry
-        28: (220, 180, 100),     # Gold Ochre
-        29: (220, 200, 140),     # Light Ochre
-        30: (150, 80, 60),       # Reddish Brown
-        31: (180, 150, 120),     # Light Brown
-        32: (180, 140, 100),     # Natural Sienna
-        33: (80, 50, 40),        # Dark Brown
-        64: (180, 120, 80),      # Burnt Ochre
-        65: (180, 100, 80),      # Medium Terracotta
-        66: (120, 100, 80),      # Raw Umber
-        68: (100, 70, 50),       # Burnt Umber
+        # Brązy / ochry - poprawione wartości RGB
+        28: (184, 134, 76),       # Gold Ochre - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        29: (210, 180, 140),      # Light Ochre - jasna ochra
+        30: (139, 69, 19),        # Reddish Brown - czerwonawy brąz
+        31: (160, 82, 45),        # Light Brown - jasny brąz
+        32: (160, 82, 45),        # Natural Sienna - naturalna sienna
+        33: (101, 67, 33),        # Dark Brown - ciemny brąz
+        64: (160, 82, 45),        # Burnt Ochre - palona ochra
+        65: (205, 133, 63),       # Medium Terracotta - średnia terra cotta
+        66: (101, 67, 33),        # Raw Umber - surowa umbra
+        68: (101, 67, 33),        # Burnt Umber - palona umbra
         
-        # Szarości / czernie / metaliczne
-        34: (180, 200, 220),     # Bluish Grey Light
-        35: (200, 200, 200),     # Platine Grey
-        36: (20, 20, 20),        # Ivory Black
-        38: (140, 150, 160),     # Cold Grey
-        39: (180, 180, 180),     # Standard Silver
-        40: (220, 180, 80),      # Standard Gold
-        69: (200, 200, 200),     # Light Grey
+        # Szarości / czernie / metaliczne - poprawione wartości RGB
+        34: (176, 196, 222),      # Bluish Grey Light - jasna niebieskawa
+        35: (200, 200, 200),      # Platine Grey
+        36: (0, 0, 0),            # Ivory Black - czarny
+        38: (140, 150, 160),      # Cold Grey
+        39: (192, 192, 192),      # Standard Silver - srebro
+        40: (255, 215, 0),        # Standard Gold - złoto
+        69: (200, 200, 200),      # Light Grey
         70: (100, 100, 100),     # Dark Grey
-        71: (150, 150, 150),     # Medium Grey
-        72: (120, 120, 130),     # Slate Grey
+        71: (128, 128, 128),      # Medium Grey - średnia
+        72: (112, 128, 144),      # Slate Grey - łupkowa
         
         # Zestaw Portrait (dodatkowe kolory)
         350: (255, 220, 200),    # Portrait Peach
@@ -416,40 +437,49 @@ def get_color_for_pencil(num, color_name=None):
         
         # Dodatkowe kolory z katalogu 144 - żółcie/beże
         500: (255, 250, 240),    # Ivory Bone
+        504: (190, 186, 106),    # Lemon Yellow - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         550: (255, 245, 220),    # Fair Portrait Gold
         501: (255, 248, 200),    # Pollen Yellow
-        801: (240, 220, 160),    # Yellow Ochre
+        801: (187, 153, 78),     # Yellow Ochre - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         
-        # Dodatkowe pomarańcze
+        # Dodatkowe pomarańcze - poprawione wartości RGB
         555: (255, 200, 140),    # Papaya Orange
         556: (255, 180, 100),    # Amber Orange
-        557: (255, 160, 80),     # Tangerine Orange
-        558: (255, 100, 40),     # Fire Orange
-        126: (255, 140, 90),     # Persian Orange
-        559: (255, 150, 100),    # Portland Orange
-        560: (220, 120, 100),    # Dark Salmon Orange
+        557: (255, 160, 80),      # Tangerine Orange
+        558: (185, 155, 100),      # Fire Orange - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        126: (184, 122, 76),     # Persian Orange - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        559: (255, 150, 100),     # Portland Orange
+        560: (220, 120, 100),     # Dark Salmon Orange
         
-        # Dodatkowe czerwienie/róże
+        # Dodatkowe czerwienie/róże - poprawione wartości RGB
         600: (255, 100, 80),     # Light Scarlet Red
+        601: (165, 105, 103),    # Scarlet Red - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         606: (200, 40, 30),      # Dark Vermilion Red
         602: (180, 30, 50),      # Currant Red
-        603: (140, 20, 40),      # Wine Red
+        603: (166, 85, 96),      # Wine Red - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         605: (100, 10, 30),      # Burgundy Red
         653: (255, 50, 150),     # Mexican Pink
-        131: (255, 150, 180),    # French Pink
+        131: (137, 77, 97),       # French Pink - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        132: (172, 90, 87),       # Carmine Red - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        170: (184, 104, 101),    # Pyrrole Red - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         609: (220, 150, 160),    # Antique Rose
         604: (255, 120, 100),    # Coral Red
         610: (240, 100, 120),    # Light Carmine Red
         607: (255, 130, 160),    # Punch Pink
         608: (255, 200, 210),    # Light French Pink
         
-        # Dodatkowe fiolety
+        # Dodatkowe fiolety - poprawione wartości RGB
         651: (230, 180, 240),    # Orchid Purple
         654: (140, 60, 120),     # Dark Reddish Violet
         655: (120, 40, 100),     # Byzantium Purple
-        177: (200, 160, 220),    # Lilac Violet
+        177: (146, 110, 145),    # Lilac Violet - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         650: (80, 30, 60),       # Fig Purple
-        180: (150, 100, 160),    # Dark Lavender Violet
+        180: (115, 97, 128),     # Dark Lavender Violet - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        13: (230, 230, 250),     # Lavender Violet - lawendowy
+        178: (147, 97, 131),     # Reddish Violet - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
+        179: (138, 43, 226),     # Bluish Violet - niebieskawy fiolet
+        181: (138, 43, 226),     # Windsor Violet - windsorski fiolet
+        182: (113, 93, 113),      # Dark Violet - OpenCV mediana z środkowej części (245x65 = 15,925 pikseli, bez krawędzi i linii)
         
         # Dodatkowe błękity
         700: (10, 20, 60),       # Midnight Blue
@@ -476,8 +506,8 @@ def get_color_for_pencil(num, color_name=None):
         503: (180, 255, 80),     # Chartreuse Yellow
         776: (180, 200, 160),    # Celadon Green
         
-        # Dodatkowe brązy/ochry
-        802: (200, 160, 100),    # Dark Yellow Ochre
+        # Dodatkowe brązy/ochry - poprawione wartości RGB
+        802: (184, 134, 11),     # Dark Yellow Ochre - ciemna ochra żółta
         800: (200, 150, 80),     # Dark Gold Ochre
         803: (180, 140, 100),    # Yellow Brown Ochre
         804: (160, 120, 80),     # Brown Ochre
@@ -496,12 +526,12 @@ def get_color_for_pencil(num, color_name=None):
         552: (250, 240, 230),    # Portrait Light
         551: (255, 245, 235),    # Portrait Fair
         
-        # Dodatkowe szarości
-        408: (60, 60, 70),       # Cool Grey 8
-        406: (100, 100, 110),    # Cool Grey 6
+        # Dodatkowe szarości - poprawione wartości RGB
+        408: (47, 79, 79),       # Cool Grey 8 - chłodna 8
+        406: (105, 105, 105),    # Cool Grey 6 - chłodna 6
         405: (120, 120, 130),    # Cool Grey 5
-        403: (180, 180, 190),    # Cool Grey 3
-        401: (230, 230, 240),    # Cool Grey 1
+        403: (169, 169, 169),    # Cool Grey 3 - chłodna 3
+        401: (211, 211, 211),    # Cool Grey 1 - chłodna 1
         451: (240, 235, 230),    # Warm Grey 1
         452: (220, 215, 210),    # Warm Grey 2
         453: (200, 195, 190),    # Warm Grey 3
@@ -840,6 +870,184 @@ def generate_portrait_variant1_single_row(colors, output_filename, title="Koh-I-
     print(f"✓ Wygenerowano: {output_filename} ({num_pages} stron)")
 
 
+def generate_portrait_variant3_black_white(colors, output_filename, title="Koh-I-Noor Polycolor 24 Portrait"):
+    """
+    Wariant 3: Dokładnie taki sam jak TONALNY, ale z czarnym kwadratem 9x9mm na górze
+    (po przeciwległej stronie do próbki koloru)
+    """
+    page_width, page_height = landscape(A4)
+    
+    num_colors = len(colors)
+    swatch_width = 9 * mm  # szerokość jak kredki
+    sample_size = 9 * mm  # kwadracik próbki na dole
+    swatch_height = 80 * mm + sample_size  # 80mm górna część + 9mm kwadracik = 89mm
+    spacing = 1 * mm  # dokładnie 1mm odstęp
+    
+    # Maksymalna liczba kredek na stronę (24)
+    colors_per_page = 24
+    
+    # Oblicz ile stron potrzeba
+    num_pages = (num_colors + colors_per_page - 1) // colors_per_page
+    
+    c = canvas.Canvas(output_filename, pagesize=landscape(A4))
+    
+    # Globalny numer porządkowy (kontynuuje przez wszystkie strony)
+    global_order_num = 0
+    
+    for page_num in range(num_pages):
+        # Przejdź do nowej strony (oprócz pierwszej)
+        if page_num > 0:
+            c.showPage()
+        
+        # Kolory dla tej strony
+        start_idx = page_num * colors_per_page
+        end_idx = min(start_idx + colors_per_page, num_colors)
+        page_colors = colors[start_idx:end_idx]
+        num_colors_on_page = len(page_colors)
+        
+        # Oblicz całkowitą szerokość potrzebną dla tej strony
+        total_width = num_colors_on_page * swatch_width + (num_colors_on_page - 1) * spacing
+        
+        # Wyśrodkuj na stronie
+        margin_x = (page_width - total_width) / 2
+        margin_y = 20 * mm
+        
+        # Tytuł - zgodnie z brandingiem KOH-I-NOOR (wersaliki) - pogrubiony
+        try:
+            c.setFont("UnicodeFont-Bold", 18)
+            title_font = "UnicodeFont-Bold"
+        except:
+            c.setFont("Helvetica-Bold", 18)
+            title_font = "Helvetica-Bold"
+        branded_title = title.upper()
+        if num_pages > 1:
+            branded_title += f" - Strona {page_num + 1}/{num_pages}"
+        c.drawString(margin_x, page_height - margin_y - 8 * mm, branded_title)
+        c.setLineWidth(0.5)
+        c.line(margin_x, page_height - margin_y - 11 * mm, page_width - margin_x, page_height - margin_y - 11 * mm)
+        
+        # Pozycja startowa
+        header_height = 20 * mm
+        available_height = page_height - 2 * margin_y - header_height
+        
+        # Wysokości elementów
+        name_text_max_height = 25 * mm
+        num_text_max_height = 15 * mm
+        swatch_size_val = swatch_height
+        
+        # Całkowita wysokość potrzebna na jeden element
+        total_element_height = name_text_max_height + swatch_size_val + num_text_max_height + 8 * mm
+        
+        # Przesunięcie w dół
+        center_y = margin_y + header_height + (available_height * 0.4) - 20 * mm + 60 * mm
+        
+        # Pozycja kwadratów
+        swatch_y = center_y - num_text_max_height - swatch_size_val
+        
+        start_x = margin_x
+        
+        for idx, (num, name) in enumerate(page_colors):
+            x = start_x + idx * (swatch_width + spacing)
+            center_x = x + swatch_width / 2
+            global_order_num += 1
+            order_num = global_order_num
+            
+            # 1. Nazwa koloru po angielsku (pionowo, obrócona o 90 stopni, na górze, po lewej)
+            c.setFont("Helvetica", 8)
+            c.setFillColor(black)
+            name_text = str(name)
+            
+            # Skróć nazwę jeśli za długa
+            if len(name_text) > 20:
+                name_text = name_text[:18] + "..."
+            
+            name_text_width = c.stringWidth(name_text, "Helvetica", 8)
+            name_text_x = center_x - 1.5 * mm
+            name_text_y = swatch_y + swatch_height + 10 * mm + name_text_width / 2
+            
+            c.saveState()
+            c.setFillColor(black)
+            c.translate(name_text_x, name_text_y)
+            c.rotate(90)
+            c.drawString(-name_text_width / 2, 0, name_text)
+            c.restoreState()
+            
+            # 1b. Polska nazwa koloru (pionowo, obrócona o 90 stopni, obok angielskiej, po prawej)
+            polish_name = POLISH_NAMES.get(num, "")
+            if polish_name:
+                try:
+                    font_name = "UnicodeFont"
+                    c.setFont(font_name, 7)
+                except:
+                    font_name = "Helvetica"
+                    c.setFont(font_name, 7)
+                c.setFillColor(black)
+                
+                polish_text_width = c.stringWidth(polish_name, font_name, 7)
+                polish_text_x = center_x + 1.5 * mm
+                polish_text_y = swatch_y + swatch_height + 10 * mm + polish_text_width / 2
+                
+                c.saveState()
+                c.setFillColor(black)
+                c.translate(polish_text_x, polish_text_y)
+                c.rotate(90)
+                c.drawString(-polish_text_width / 2, 0, polish_name)
+                c.restoreState()
+            
+            # 3. Kredka próbki (prostokąt jak kredka) - 9mm szerokość, 89mm wysokość
+            # Główny prostokąt kredki - pusty, do wypełnienia kredką (dokładnie jak w TONALNY)
+            c.setStrokeColor(black)
+            c.setLineWidth(1.2)
+            c.setFillColor(white)
+            corner_radius = 1 * mm
+            c.roundRect(x, swatch_y, swatch_width, swatch_height, corner_radius, fill=1, stroke=1)
+            
+            # Czarny prostokąt 35mm wysokości - na górze
+            black_height = 35 * mm  # 35mm wysokości
+            black_square_y = swatch_y + swatch_height - black_height  # na górze prostokąta
+            c.setFillColor(black)
+            c.setStrokeColor(black)
+            c.setLineWidth(1.0)
+            c.roundRect(x, black_square_y, swatch_width, black_height, corner_radius, fill=1, stroke=1)
+            
+            # Mały kwadracik 9x9mm z kolorem próbki - na dole prostokąta (dokładnie jak w TONALNY)
+            color_rgb = get_color_for_pencil(num, name)
+            color = HexColor(f"#{color_rgb[0]:02x}{color_rgb[1]:02x}{color_rgb[2]:02x}")
+            
+            # Kwadracik na dole - 9mm x 9mm
+            sample_y = swatch_y  # na samym dole prostokąta
+            c.setFillColor(color)
+            c.setStrokeColor(black)
+            c.setLineWidth(1.0)
+            c.roundRect(x, sample_y, swatch_width, sample_size, corner_radius, fill=1, stroke=1)
+            
+            # 4. Numer porządkowy (poziomy, tuż pod kredką)
+            c.setFont("Helvetica-Bold", 9)
+            c.setFillColor(black)
+            order_text = str(order_num)
+            order_text_width = c.stringWidth(order_text, "Helvetica-Bold", 9)
+            c.drawString(center_x - order_text_width / 2, swatch_y - 4 * mm, order_text)
+            
+            # 5. Numer 3800/nr (pionowo, obrócona o 90 stopni, na dole)
+            c.setFont("Helvetica-Bold", 8)
+            c.setFillColor(black)
+            num_text = f"3800/{num:02d}"
+            
+            num_text_width = c.stringWidth(num_text, "Helvetica-Bold", 8)
+            num_text_x = center_x
+            num_text_y = swatch_y - 8 * mm - num_text_width / 2
+            
+            c.saveState()
+            c.setFillColor(black)
+            c.translate(num_text_x, num_text_y)
+            c.rotate(90)
+            c.drawString(-num_text_width / 2, 0, num_text)
+            c.restoreState()
+    
+    c.save()
+    print(f"✓ Wygenerowano: {output_filename} ({num_pages} stron)")
+
+
 def generate_portrait_variant2_two_rows(colors, output_filename, title="Koh-I-Noor Polycolor 24 Portrait"):
     """
     Wariant 2: Dwa rzędy po 12 kredek (bardziej czytelny)
@@ -946,6 +1154,482 @@ def generate_portrait_variant2_two_rows(colors, output_filename, title="Koh-I-No
     print(f"✓ Wygenerowano: {output_filename}")
 
 
+def generate_portrait_with_photo(colors, output_filename, photo_path, title="Koh-I-Noor Polycolor 24 Portrait", pencil_order=None):
+    """
+    Generuje PDF z próbkami kolorów i dokładnie tymi samymi prostokątami ze zdjęcia,
+    z których ekstrahujemy kolory - używając inteligentnego wykrywania obszarów.
+    
+    Args:
+        colors: Lista kolorów w kolejności, w jakiej mają być wyświetlone w PDF
+        output_filename: Nazwa pliku wyjściowego
+        photo_path: Ścieżka do zdjęcia z próbkami
+        title: Tytuł PDF
+        pencil_order: Lista numerów kredek w kolejności, w jakiej są na zdjęciu (z góry do dołu)
+                     Jeśli None, użyje domyślnej kolejności z detect_swatches_intelligent.py
+    """
+    import cv2
+    import tempfile
+    import sys
+    import importlib.util
+    
+    # Zaimportuj funkcje z detect_swatches_intelligent.py
+    spec = importlib.util.spec_from_file_location("detect_swatches_intelligent", 
+                                                   os.path.join(os.path.dirname(__file__), "detect_swatches_intelligent.py"))
+    detect_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(detect_module)
+    
+    page_width, page_height = landscape(A4)
+    
+    num_colors = len(colors)
+    swatch_width = 9 * mm
+    sample_size = 9 * mm
+    swatch_height = 80 * mm + sample_size
+    spacing = 1 * mm
+    
+    colors_per_page = 24
+    num_pages = (num_colors + colors_per_page - 1) // colors_per_page
+    
+    c = canvas.Canvas(output_filename, pagesize=landscape(A4))
+    
+    # Wczytaj zdjęcie
+    if not os.path.exists(photo_path):
+        print(f"Błąd: Zdjęcie nie znalezione: {photo_path}")
+        return
+    
+    img_bgr = cv2.imread(photo_path)
+    if img_bgr is None:
+        print(f"Błąd: Nie można wczytać obrazu {photo_path}")
+        return
+    
+    img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+    height, width = img_rgb.shape[:2]
+    
+    # INTELIGENTNE WYKRYWANIE OBSZARÓW PRÓBEK
+    # Ustal kolumnę do analizy (ta sama, którą chcemy zwizualizować w PDF)
+    target_col_start = 400
+    # Szerokość kolumny: od x=400 do końca zdjęcia (845) = 445 pikseli
+    target_col_width = width - target_col_start  # 845 - 400 = 445
+
+    print("Wykrywanie obszarów próbek...")
+    # Przekaż kolejność kredek do funkcji wykrywania (kolejność z góry do dołu na zdjęciu)
+    swatch_map = detect_module.intelligent_swatch_detection(
+        photo_path,
+        target_col_start=target_col_start,
+        target_col_width=target_col_width,
+        pencil_order=pencil_order,
+    )
+    
+    if not swatch_map:
+        print("Błąd: Nie udało się wykryć obszarów próbek")
+        return
+    
+    print(f"Wykryto {len(swatch_map)} obszarów próbek")
+    
+    # Narysuj zielone ramki bezpośrednio na zdjęciu (przed obrotem)
+    print("Rysowanie zielonych ramek na zdjęciu...")
+    img_bgr_with_frames = img_bgr.copy()
+    
+    # Znajdź obszar z najmniejszą współrzędną Y (najwyżej na zdjęciu) - to będzie pierwsza kredka
+    first_swatch_y = float('inf')
+    first_swatch_num = None
+    for num, swatch_info in swatch_map.items():
+        y = swatch_info['y']
+        if y < first_swatch_y:
+            first_swatch_y = y
+            first_swatch_num = num
+    
+    for num, swatch_info in swatch_map.items():
+        x = swatch_info['x']
+        y = swatch_info['y']
+        w = swatch_info['width']
+        h = swatch_info['height']
+        
+        # Użyj tych samych marginesów co przy ekstrakcji kolorów: 5% dla X, 10% dla Y
+        margin_x_percent = 0.05  # 5% margines w szerokości
+        margin_y_percent = 0.10  # 10% margines w wysokości
+        x_start = x + int(w * margin_x_percent)
+        x_end = x + w - int(w * margin_x_percent)
+        y_start = y + int(h * margin_y_percent)
+        y_end = y + h - int(h * margin_y_percent)
+        
+        # Narysuj zieloną ramkę pokazującą rzeczywisty obszar ekstrakcji (BGR format w OpenCV: (0, 255, 0) = zielony)
+        # Użyj grubszej linii (3 piksele) dla lepszej widoczności w PDF
+        cv2.rectangle(img_bgr_with_frames, (x_start, y_start), (x_end, y_end), (0, 255, 0), 3)
+        # Jeśli to pierwsza kredka (najwyżej na zdjęciu), dodaj etykietę
+        if num == first_swatch_num:
+            label = f"3800/{num:02d}"
+            # umieść etykietę tuż nad ramką - większy rozmiar i lepsza widoczność
+            font_scale = 1.2
+            thickness = 3
+            text_x = x + w // 2  # Wyśrodkuj tekst
+            text_y = max(25, y - 15)  # Wyżej nad ramką
+            # Pobierz rozmiar tekstu, aby wyśrodkować
+            (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)
+            text_x = text_x - text_width // 2  # Wyśrodkuj
+            cv2.putText(
+                img_bgr_with_frames,
+                label,
+                (text_x, text_y),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                font_scale,
+                (0, 255, 0),
+                thickness,
+                cv2.LINE_AA,
+            )
+    
+    # Zapisz zmodyfikowane zdjęcie do pliku tymczasowego
+    temp_dir = tempfile.mkdtemp()
+    temp_photo_path = os.path.join(temp_dir, "photo_with_frames.jpg")
+    cv2.imwrite(temp_photo_path, img_bgr_with_frames)
+    photo_path = temp_photo_path  # Użyj zmodyfikowanego zdjęcia
+    print(f"Zapisano zdjęcie z ramkami: {temp_photo_path}")
+    
+    # Sprawdź, czy wszystkie kolory mają wykryte obszary
+    missing_colors = []
+    for num, name in colors:
+        if num not in swatch_map:
+            missing_colors.append((num, name))
+    
+    if missing_colors:
+        print(f"UWAGA: {len(missing_colors)} kolorów nie ma wykrytych obszarów:")
+        for num, name in missing_colors:
+            print(f"  - {num:03d}: {name}")
+    
+    margin_x = 10 * mm
+    margin_y = 20 * mm
+    
+    global_order_num = 0
+    
+    # Tymczasowy folder na wycięte prostokąty
+    temp_dir = tempfile.mkdtemp()
+    
+    for page_num in range(num_pages):
+        if page_num > 0:
+            c.showPage()
+        
+        start_idx = page_num * colors_per_page
+        end_idx = min(start_idx + colors_per_page, num_colors)
+        page_colors = colors[start_idx:end_idx]
+        num_colors_on_page = len(page_colors)
+        
+        # Tytuł
+        try:
+            c.setFont("UnicodeFont-Bold", 18)
+            title_font = "UnicodeFont-Bold"
+        except:
+            c.setFont("Helvetica-Bold", 18)
+            title_font = "Helvetica-Bold"
+        branded_title = title.upper()
+        if num_pages > 1:
+            branded_title += f" - Strona {page_num + 1}/{num_pages}"
+        c.drawString(margin_x, page_height - margin_y - 8 * mm, branded_title)
+        c.setLineWidth(0.5)
+        c.line(margin_x, page_height - margin_y - 11 * mm, page_width - margin_x, page_height - margin_y - 11 * mm)
+        
+        # LEWA STRONA - Próbki kolorów
+        header_height = 20 * mm
+        available_height = page_height - 2 * margin_y - header_height
+        
+        name_text_max_height = 25 * mm
+        num_text_max_height = 15 * mm
+        swatch_size_val = swatch_height
+        total_element_height = name_text_max_height + swatch_size_val + num_text_max_height + 8 * mm
+        
+        center_y = margin_y + header_height + (available_height * 0.4) - 20 * mm + 60 * mm
+        swatch_y = center_y - num_text_max_height - swatch_size_val
+        
+        # Oblicz szerokość - zdjęcie jest nakładane NA próbkę, więc szerokość = tylko szerokość próbki
+        element_width = swatch_width  # Tylko szerokość próbki (zdjęcie jest na próbce)
+        total_width = num_colors_on_page * element_width + (num_colors_on_page - 1) * spacing
+        # Wyśrodkuj na stronie
+        left_margin = (page_width - total_width) / 2
+        start_x = left_margin
+        
+        for idx, (num, name) in enumerate(page_colors):
+            # Pozycja próbki
+            element_start_x = start_x + idx * (element_width + spacing)
+            x = element_start_x
+            center_x_pdf = x + swatch_width / 2
+            global_order_num += 1
+            order_num = global_order_num
+            
+            # Nazwa angielska
+            c.setFont("Helvetica", 8)
+            c.setFillColor(black)
+            name_text = str(name)
+            if len(name_text) > 20:
+                name_text = name_text[:18] + "..."
+            
+            name_text_width = c.stringWidth(name_text, "Helvetica", 8)
+            name_text_x = center_x_pdf - 1.5 * mm
+            name_text_y = swatch_y + swatch_height + 10 * mm + name_text_width / 2
+            
+            c.saveState()
+            c.setFillColor(black)
+            c.translate(name_text_x, name_text_y)
+            c.rotate(90)
+            c.drawString(-name_text_width / 2, 0, name_text)
+            c.restoreState()
+            
+            # Polska nazwa
+            polish_name = POLISH_NAMES.get(num, "")
+            if polish_name:
+                try:
+                    font_name = "UnicodeFont"
+                    c.setFont(font_name, 7)
+                except:
+                    font_name = "Helvetica"
+                    c.setFont(font_name, 7)
+                c.setFillColor(black)
+                polish_text_width = c.stringWidth(polish_name, font_name, 7)
+                polish_text_x = center_x_pdf + 1.5 * mm
+                polish_text_y = swatch_y + swatch_height + 10 * mm + polish_text_width / 2
+                c.saveState()
+                c.setFillColor(black)
+                c.translate(polish_text_x, polish_text_y)
+                c.rotate(90)
+                c.drawString(-polish_text_width / 2, 0, polish_name)
+                c.restoreState()
+            
+            # Numer
+            c.setFont("Helvetica-Bold", 9)
+            num_text = f"3800/{num:03d}"
+            num_text_width = c.stringWidth(num_text, "Helvetica-Bold", 9)
+            num_text_x = center_x_pdf - num_text_width / 2
+            num_text_y = swatch_y - 5 * mm
+            c.drawString(num_text_x, num_text_y, num_text)
+            
+            # Numer porządkowy
+            c.setFont("Helvetica", 8)
+            order_text = str(order_num)
+            order_text_width = c.stringWidth(order_text, "Helvetica", 8)
+            order_text_x = center_x_pdf - order_text_width / 2
+            order_text_y = swatch_y - 12 * mm
+            c.drawString(order_text_x, order_text_y, order_text)
+            
+            # NAJPIERW wstaw obraz ze zdjęcia (tło), POTEM próbkę koloru (nakładka półprzezroczysta)
+            # Użyj inteligentnie wykrytego obszaru - DLA WSZYSTKICH KOLORÓW
+            # Każdy kolor MUSI mieć próbkę ze zdjęcia
+            if num in swatch_map:
+                swatch_info = swatch_map[num]
+                
+                # Wyciągnij prostokąt z wykrytego obszaru - INTELIGENTNE wykrywanie granic
+                # UŻYJ ODDZIELNYCH ZMIENNYCH dla współrzędnych ze zdjęcia!
+                swatch_x = swatch_info['x']  # Współrzędna X ze zdjęcia
+                swatch_y_photo = swatch_info['y']  # Współrzędna Y ze zdjęcia
+                w = swatch_info['width']
+                h = swatch_info['height']
+                
+                # Użyj różnych marginesów: 5% dla szerokości (X), 10% dla wysokości (Y)
+                margin_x_percent = 0.05  # 5% margines w szerokości
+                margin_y_percent = 0.10  # 10% margines w wysokości
+                
+                x_start = swatch_x + int(w * margin_x_percent)
+                x_end = swatch_x + w - int(w * margin_x_percent)
+                y_start = swatch_y_photo + int(h * margin_y_percent)
+                y_end = swatch_y_photo + h - int(h * margin_y_percent)
+                
+                # Wyciągnij prostokąt ze zdjęcia
+                roi = img_rgb[y_start:y_end, x_start:x_end]
+                
+                if roi.size > 0:
+                    # DODATKOWE filtrowanie - usuń wszystkie czarne i ciemne piksele z wyciętego obszaru
+                    # SPECJALNA OBSŁUGA dla białego koloru (kredka 1) - nie filtruj szarych pikseli!
+                    roi_cleaned = roi.copy()
+                    
+                    if num == 1:  # White - specjalna obsługa
+                        # Dla białego koloru, usuń TYLKO naprawdę czarne piksele (linie)
+                        # Nie filtruj szarych - biały na zdjęciu może być szary!
+                        roi_gray = cv2.cvtColor(roi, cv2.COLOR_RGB2GRAY)
+                        black_mask = roi_gray < 50  # Tylko naprawdę czarne (linie)
+                        
+                        if np.any(black_mask):
+                            # Zamień tylko naprawdę czarne piksele na biały
+                            roi_cleaned[black_mask] = [255, 255, 255]
+                    else:
+                        # Dla innych kolorów - normalne filtrowanie
+                        # Konwertuj na skale szarości do wykrywania czarnych pikseli
+                        roi_gray = cv2.cvtColor(roi, cv2.COLOR_RGB2GRAY)
+                        
+                        # Wykryj czarne i bardzo ciemne piksele (linie) - bardzo agresywny próg
+                        black_threshold = 80  # Wyższy próg - wykryj też ciemne obszary
+                        black_mask = roi_gray < black_threshold
+                        
+                        # Wykryj również piksele o niskiej saturacji (szare linie)
+                        roi_hsv = cv2.cvtColor(roi, cv2.COLOR_RGB2HSV)
+                        saturation = roi_hsv[:, :, 1]
+                        low_saturation_mask = saturation < 30  # Niska saturacja = szare linie
+                        
+                        # Kombinuj: czarne + niska saturacja = linie do usunięcia
+                        lines_mask = black_mask | low_saturation_mask
+                        
+                        if np.any(lines_mask):
+                            # Znajdź nie-liniowe piksele
+                            non_lines_mask = ~lines_mask
+                            
+                            if np.any(non_lines_mask):
+                                # Dla każdego kanału RGB, wypełnij linie medianą z nie-liniowych pikseli
+                                for channel in range(3):
+                                    channel_data = roi[:, :, channel].copy()
+                                    median_color = np.median(channel_data[non_lines_mask])
+                                    channel_data[lines_mask] = int(median_color)
+                                    roi_cleaned[:, :, channel] = channel_data
+                            else:
+                                # Jeśli wszystkie piksele to linie, użyj białego
+                                roi_cleaned[lines_mask] = [255, 255, 255]
+                    
+                    # Zapisz wycięty prostokąt jako tymczasowy plik
+                    roi_pil = Image.fromarray(roi_cleaned)
+                    
+                    # OBRÓĆ prostokąt o 90 stopni, aby był pionowy (wzdłuż) jak próbka
+                    roi_pil_rotated = roi_pil.rotate(90, expand=True)
+                    
+                    temp_file = os.path.join(temp_dir, f"roi_{num}.png")
+                    roi_pil_rotated.save(temp_file)
+                    
+                    # NAJPIERW narysuj główny prostokąt kredki z czarną ramką (jak w oryginalnej wersji)
+                    corner_radius = 1 * mm
+                    c.setStrokeColor(black)
+                    c.setLineWidth(1.2)
+                    c.setFillColor(white)
+                    c.roundRect(x, swatch_y, swatch_width, swatch_height, corner_radius, fill=1, stroke=1)
+                    
+                    # Potem kwadracik 9x9mm z kolorem RGB na dole
+                    color_rgb = get_color_for_pencil(num, name)
+                    color = HexColor(f"#{color_rgb[0]:02x}{color_rgb[1]:02x}{color_rgb[2]:02x}")
+                    
+                    # Kwadracik na dole - 9mm x 9mm (sample_size jest już zdefiniowane w funkcji)
+                    sample_y = swatch_y  # na samym dole prostokąta
+                    
+                    c.setFillColor(color)
+                    c.setStrokeColor(black)
+                    c.setLineWidth(1.0)
+                    c.roundRect(x, sample_y, swatch_width, sample_size, corner_radius,
+                               fill=1, stroke=1)
+                    
+                    # TERAZ nałóż wycięty prostokąt NA próbkę koloru (w tym samym miejscu co próbka PDF)
+                    # Użyj współrzędnych PDF, nie ze zdjęcia!
+                    photo_x = x  # x to współrzędna PDF próbki (z pętli)
+                    photo_y = swatch_y  # swatch_y to współrzędna PDF próbki
+                    photo_width = swatch_width  # Ta sama szerokość co próbka
+                    photo_height = swatch_height  # Ta sama wysokość co próbka
+                    
+                    # Oblicz skalę zachowując proporcje (dla obróconego obrazu)
+                    roi_width, roi_height = roi_pil_rotated.size
+                    if roi_width > 0 and roi_height > 0:
+                        # Użyj pełnej szerokości i wysokości próbki (bez skalowania w dół)
+                        # Obraz powinien wypełnić całą próbkę
+                        try:
+                            # Narysuj wycięty prostokąt - użyj pełnej szerokości i wysokości próbki
+                            # NIE skalować - użyj dokładnie rozmiaru próbki
+                            # Sprawdź czy plik istnieje przed wstawieniem
+                            if os.path.exists(temp_file):
+                                # Wstaw obraz w oryginalnej skali (zachowując proporcje)
+                                # Skaluj tak, aby obraz zmieścił się w próbce, zachowując proporcje
+                                scale_w = photo_width / roi_width
+                                scale_h = photo_height / roi_height
+                                scale = min(scale_w, scale_h)  # Użyj min, aby obraz zmieścił się w próbce
+                                
+                                scaled_width = roi_width * scale
+                                scaled_height = roi_height * scale
+                                
+                                # Wyśrodkuj w obszarze próbki
+                                photo_x_centered = photo_x + (photo_width - scaled_width) / 2
+                                photo_y_centered = photo_y + (photo_height - scaled_height) / 2
+                                
+                                c.drawImage(temp_file, photo_x_centered, photo_y_centered,
+                                           width=scaled_width, height=scaled_height, preserveAspectRatio=True)
+                                
+                                print(f"  ✓ Wstawiono próbkę dla kredki {num:03d} (rozmiar: {scaled_width:.1f}x{scaled_height:.1f}mm)")
+                            else:
+                                print(f"  ✗ Błąd: Plik {temp_file} nie istnieje dla kredki {num:03d}")
+                        except Exception as e:
+                            # Jeśli błąd, narysuj prostokąt z komunikatem
+                            print(f"  ✗ Błąd wstawiania próbki dla kredki {num:03d}: {str(e)}")
+                            c.setFont("Helvetica", 6)
+                            c.setFillColor(black)
+                            c.drawString(photo_x + 1 * mm, photo_y + photo_height / 2, f"Błąd: {str(e)[:20]}")
+                    else:
+                        print(f"  ✗ Błąd: Nieprawidłowe wymiary ROI dla kredki {num:03d}: {roi_width}x{roi_height}")
+                else:
+                    print(f"  ✗ Błąd: Pusty ROI dla kredki {num:03d}")
+            else:
+                # Jeśli kolor nie ma wykrytego obszaru, wyświetl komunikat
+                print(f"UWAGA: Kolor {num:03d} ({name}) nie ma wykrytego obszaru - brak próbki ze zdjęcia")
+            
+            # NIE rysuj próbki koloru - zostaw tylko obrazy ze zdjęcia, żeby były w pełni widoczne
+            # Jeśli chcesz próbki kolorów, odkomentuj poniższy kod:
+            # color_rgb = get_color_for_pencil(num, name)
+            # color = HexColor(f"#{color_rgb[0]:02x}{color_rgb[1]:02x}{color_rgb[2]:02x}")
+            # c.setFillColor(color)
+            # c.setStrokeColor(black)
+            # c.setLineWidth(1.2)
+            # corner_radius = 1 * mm
+            # c.roundRect(x, swatch_y, swatch_width, swatch_height, corner_radius, fill=1, stroke=1)
+    
+    # Dodaj drugą stronę z całym zdjęciem
+    c.showPage()
+    
+    # Tytuł na stronie ze zdjęciem
+    header_height = 20 * mm
+    try:
+        c.setFont("UnicodeFont-Bold", 18)
+        title_font = "UnicodeFont-Bold"
+    except:
+        c.setFont("Helvetica-Bold", 18)
+        title_font = "Helvetica-Bold"
+    photo_title = "ZDJĘCIE KALIBRACYJNE - PRÓBKI KREDKAMI"
+    c.drawString(margin_x, page_height - margin_y - 8 * mm, photo_title)
+    c.setLineWidth(0.5)
+    c.line(margin_x, page_height - margin_y - 11 * mm, page_width - margin_x, page_height - margin_y - 11 * mm)
+    
+    # Oblicz szerokość wszystkich kredek (ta sama szerokość co na pierwszej stronie)
+    # To jest szerokość całego rzędu kredek z pierwszej strony
+    first_page_colors = min(colors_per_page, num_colors)
+    total_swatches_width = first_page_colors * swatch_width + (first_page_colors - 1) * spacing
+    left_margin_swatches = (page_width - total_swatches_width) / 2
+    
+    # Użyj tej samej szerokości dla zdjęcia (obróconego o 90 stopni)
+    # Zdjęcie jest pionowe (height > width), więc po obrocie szerokość = wysokość oryginału
+    img_pdf_width = total_swatches_width  # Ta sama szerokość co wszystkie kredki
+    # Oblicz wysokość zachowując proporcje (po obrocie: wysokość = szerokość oryginału)
+    img_pdf_height = (img_pdf_width / height) * width  # Po obrocie: height->width, width->height
+    
+    # Wyśrodkuj zdjęcie (użyj tego samego marginesu co kredki)
+    img_x = left_margin_swatches
+    available_height = page_height - 2 * margin_y - header_height
+    img_y = margin_y + (available_height - img_pdf_height) / 2
+    
+    # Skale dla przeliczania współrzędnych
+    scale_x = img_pdf_width / height  # Skala dla szerokości (po obrocie: height->width)
+    scale_y = img_pdf_height / width  # Skala dla wysokości (po obrocie: width->height)
+    
+    # Obróć zdjęcie o 90 stopni w lewo (aby było poziome)
+    # Ramki są już narysowane bezpośrednio na zdjęciu, więc nie trzeba ich rysować tutaj
+    c.saveState()
+    c.translate(img_x + img_pdf_width / 2, img_y + img_pdf_height / 2)
+    c.rotate(90)
+    # Po obrocie, współrzędne są względem środka, więc przesuń o połowę wymiarów
+    c.drawImage(photo_path, -img_pdf_height / 2, -img_pdf_width / 2, 
+                width=img_pdf_height, height=img_pdf_width, preserveAspectRatio=True)
+    c.restoreState()
+    
+    # Numer strony
+    c.setFont("Helvetica", 9)
+    c.drawRightString(page_width - margin_x, margin_y - 5 * mm, f"Strona {num_pages + 1}/{num_pages + 1}")
+    
+    c.save()
+    
+    # Usuń tymczasowe pliki
+    import shutil
+    try:
+        shutil.rmtree(temp_dir)
+    except:
+        pass
+    
+    print(f"✓ Wygenerowano: {output_filename} (z wyciętymi prostokątami ze zdjęcia)")
+
+
 def register_unicode_font():
     """Rejestruje czcionkę TrueType z obsługą polskich znaków"""
     # Próbuj zarejestrować systemową czcionkę obsługującą Unicode
@@ -1005,6 +1689,16 @@ def main():
     
     print()
     
+    # Generuj wzornik dla zestawu 72 - KATALOG 2017
+    if COLORS_72_2017:
+        print(f"Zestaw 72 kolorów - KATALOG 2017 ({len(COLORS_72_2017)} kolorów)...")
+        generate_portrait_variant1_single_row(
+            COLORS_72_2017,
+            "Koh-I-Noor_Polycolor_72_2017.pdf",
+            "KOH-I-NOOR POLYCOLOR 72 - KATALOG 2017"
+        )
+        print()
+    
     # Generuj wzornik dla pełnego katalogu 144 kolorów - KOLEJNOŚĆ KATALOGOWA
     print(f"Pełny katalog 144 kolorów - KATALOGOWY ({len(COLORS_144_CATALOG)} kolorów)...")
     generate_portrait_variant1_single_row(
@@ -1035,6 +1729,140 @@ def main():
         "Koh-I-Noor_Polycolor_24_Portrait_Z_PUDELKA.pdf",
         "KOH-I-NOOR POLYCOLOR 24 PORTRAIT (3824) - KOLEJNOŚĆ Z PUDEŁKA"
     )
+    
+    # Generuj wariant 3: Prostokąty podzielone na pół (białe/czarne tło) - KOLEJNOŚĆ TONALNA
+    print(f"Zestaw 24 Portrait - Wariant 3 BIAŁE/CZARNE TŁO (jeden rząd, test krycia)...")
+    generate_portrait_variant3_black_white(
+        COLORS_24_PORTRAIT,
+        "Koh-I-Noor_Polycolor_24_Portrait_BIALE_CZARNE.pdf",
+        "KOH-I-NOOR POLYCOLOR 24 PORTRAIT (3824) - TEST KRYCIA NA BIAŁYM I CZARNYM TLE"
+    )
+    
+    # Generuj PDF dla 24 kolorów ZE ZDJĘCIA KALIBRACYJNEGO ze skorygowanymi wartościami RGB
+    print()
+    print(f"24 kolory ze zdjęcia kalibracyjnego - SKORYGOWANE WARTOŚCI RGB (na próbę)...")
+    import json
+    from colorsys import rgb_to_hsv
+    
+    # Wczytaj skorygowane wartości
+    try:
+        with open('calibrated_colors_second.json', 'r') as f:
+            calibrated = json.load(f)
+    except FileNotFoundError:
+        calibrated = {}
+    
+    # Numery kredek które były na zdjęciu kalibracyjnym
+    calibration_pencils = [1, 41, 504, 3, 801, 28, 45, 44, 42, 558, 126, 5, 6, 170, 601, 132, 603, 131, 357, 178, 177, 8, 182, 180]
+    
+    # Pobierz nazwy z katalogu
+    catalog_map = {num: name for num, name in COLORS_144_CATALOG}
+    
+    # Stwórz listę kolorów ze skorygowanymi wartościami RGB
+    colors_calibrated = []
+    for num in calibration_pencils:
+        if str(num) in calibrated:
+            target_rgb = tuple(calibrated[str(num)]['target_rgb'])
+            name = catalog_map.get(num, f"Color {num}")
+            colors_calibrated.append((num, name, target_rgb))
+    
+    # Sortowanie według hue (odcienia) - standardowe podejście
+    # Konwertuj RGB na HSV i sortuj według hue rosnąco, potem według value (jasności)
+    colors_with_hsv = []
+    for num, name, rgb in colors_calibrated:
+        r, g, b = rgb
+        r, g, b = r / 255.0, g / 255.0, b / 255.0
+        h, s, v = rgb_to_hsv(r, g, b)
+        colors_with_hsv.append({
+            'num': num,
+            'name': name,
+            'rgb': rgb,
+            'h': h,
+            's': s,
+            'v': v
+        })
+    
+    # Sortuj według hue rosnąco, potem według value (jasności) - od najjaśniejszych do najciemniejszych
+    tonal_sorted = sorted(colors_with_hsv, key=lambda c: (c['h'], -c['v']))
+    
+    # Odwróć kolejność: kredka 28 na pozycji 1, kredka 132 na pozycji 17
+    # Znajdź pozycje kredek 28 i 132
+    pos_28 = next(i for i, c in enumerate(tonal_sorted) if c['num'] == 28)
+    pos_132 = next(i for i, c in enumerate(tonal_sorted) if c['num'] == 132)
+    
+    # Część 1: Od początku do kredki 28 (odwróć) - pozycje 1-16
+    part1 = tonal_sorted[:pos_28+1]
+    part1_reversed = part1[::-1]
+    
+    # Część 2: Od kredki 28 do kredki 132 (odwróć, bez kredki 28) - pozycje 17-24
+    part2 = tonal_sorted[pos_28+1:pos_132+1]
+    part2_reversed = part2[::-1]
+    
+    # Część 3: Od kredki 132 do końca (bez kredki 132) - nie ma, bo 132 jest na końcu
+    part3 = tonal_sorted[pos_132+1:]
+    
+    # Nowa kolejność: odwróć od początku do 28, potem odwróć od 28 do 132
+    tonal_sorted = part1_reversed + part2_reversed + part3
+    
+    # Przenieś biały na początek (pozycja 1)
+    white_idx = next(i for i, c in enumerate(tonal_sorted) if c['num'] == 1)
+    if white_idx > 0:
+        white_color = tonal_sorted.pop(white_idx)
+        tonal_sorted.insert(0, white_color)
+    
+    COLORS_CALIBRATED_24 = [(c['num'], c['name']) for c in tonal_sorted]
+    
+    # Stwórz mapę skorygowanych wartości RGB
+    calibrated_rgb_map = {c['num']: c['rgb'] for c in tonal_sorted}
+    
+    # Tymczasowo nadpisz get_color_for_pencil dla tych kolorów
+    original_get_color = globals()['get_color_for_pencil']
+    
+    def get_color_calibrated(num, color_name=None):
+        if num in calibrated_rgb_map:
+            return calibrated_rgb_map[num]
+        return original_get_color(num, color_name)
+    
+    # Nadpisz globalną funkcję
+    globals()['get_color_for_pencil'] = get_color_calibrated
+    
+    try:
+        generate_portrait_variant1_single_row(
+            COLORS_CALIBRATED_24,
+            "Koh-I-Noor_Polycolor_24_KALIBROWANE.pdf",
+            "KOH-I-NOOR POLYCOLOR 24 KOLORY - SKORYGOWANE WARTOŚCI RGB ZE ZDJĘCIA"
+        )
+        
+        # Generuj PDF ze zdjęciem dla porównania
+        photo_path = "probki-kredek-na-papierze-trzecia-kalibracja.jpg"
+        if os.path.exists(photo_path):
+            print()
+            print(f"24 kolory ze zdjęcia kalibracyjnego - PDF ZE ZDJĘCIEM (porównanie)...")
+            # Użyj kolejności z zdjęcia (calibration_pencils) dla pierwszej strony
+            # Kolejność na zdjęciu (z góry do dołu) musi być taka sama jak na pierwszej stronie PDF
+            catalog_map = {num: name for num, name in COLORS_144_CATALOG}
+            colors_in_photo_order = [(num, catalog_map.get(num, f"Color {num}")) for num in calibration_pencils]
+            
+            # Przekaż kolejność kredek do funkcji wykrywania, aby mapowanie było poprawne
+            generate_portrait_with_photo(
+                colors_in_photo_order,  # Użyj kolejności z zdjęcia!
+                "Koh-I-Noor_Polycolor_24_Z_ZDJECIEM.pdf",
+                photo_path,
+                "KOH-I-NOOR POLYCOLOR 24 KOLORY - PORÓWNANIE Z RZECZYWISTYMI KREDKAMI",
+                pencil_order=calibration_pencils  # Przekaż kolejność z zdjęcia
+            )
+    finally:
+        # Przywróć oryginalną funkcję
+        globals()['get_color_for_pencil'] = original_get_color
+    
+    # Generuj PDF dla mojego zestawu 72 kolorów - wariant z czarnym prostokątem
+    if COLORS_MY_72:
+        print()
+        print(f"Mój zestaw 72 kolorów - Wariant BIAŁE/CZARNE TŁO (test krycia)...")
+        generate_portrait_variant3_black_white(
+            COLORS_MY_72,
+            "Koh-I-Noor_Polycolor_MOJ_ZESTAW_72_BIALE_CZARNE.pdf",
+            "KOH-I-NOOR POLYCOLOR - MÓJ ZESTAW 72 KOLORÓW - TEST KRYCIA NA BIAŁYM I CZARNYM TLE"
+        )
     
     print()
     print("✓ Gotowe! Wszystkie pliki PDF są gotowe do wydruku na A4 (orientacja pozioma).")
