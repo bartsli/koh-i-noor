@@ -1244,9 +1244,9 @@ def generate_portrait_with_photo(colors, output_filename, photo_path, title="Koh
         w = swatch_info['width']
         h = swatch_info['height']
         
-        # Użyj tych samych marginesów co przy ekstrakcji kolorów: 5% dla X, 10% dla Y
+        # Użyj tych samych marginesów co przy ekstrakcji kolorów: 5% dla X, 15% dla Y
         margin_x_percent = 0.05  # 5% margines w szerokości
-        margin_y_percent = 0.10  # 10% margines w wysokości
+        margin_y_percent = 0.15  # 15% margines w wysokości
         x_start = x + int(w * margin_x_percent)
         x_end = x + w - int(w * margin_x_percent)
         y_start = y + int(h * margin_y_percent)
@@ -1428,9 +1428,9 @@ def generate_portrait_with_photo(colors, output_filename, photo_path, title="Koh
                 w = swatch_info['width']
                 h = swatch_info['height']
                 
-                # Użyj różnych marginesów: 5% dla szerokości (X), 10% dla wysokości (Y)
+                # Użyj różnych marginesów: 5% dla szerokości (X), 15% dla wysokości (Y)
                 margin_x_percent = 0.05  # 5% margines w szerokości
-                margin_y_percent = 0.10  # 10% margines w wysokości
+                margin_y_percent = 0.15  # 15% margines w wysokości
                 
                 x_start = swatch_x + int(w * margin_x_percent)
                 x_end = swatch_x + w - int(w * margin_x_percent)
@@ -1507,8 +1507,22 @@ def generate_portrait_with_photo(colors, output_filename, photo_path, title="Koh
                     c.setFillColor(white)
                     c.roundRect(x, swatch_y, swatch_width, swatch_height, corner_radius, fill=1, stroke=1)
                     
-                    # Potem kwadracik 9x9mm z kolorem RGB na dole
-                    color_rgb = get_color_for_pencil(num, name)
+                    # Potem kwadracik 9x9mm z kolorem RGB na dole - użyj koloru wyekstrahowanego ze zdjęcia
+                    # Oblicz medianę RGB z oczyszczonego obszaru (roi_cleaned)
+                    if roi_cleaned.size > 0:
+                        # Filtruj czarne piksele (linie), które mogły pozostać
+                        roi_flat = roi_cleaned.reshape(-1, 3)
+                        # Usuń czarne piksele (linie) - próg 60
+                        valid_pixels = roi_flat[np.any(roi_flat >= 60, axis=1)]
+                        if len(valid_pixels) > 0:
+                            # Użyj mediany z ważnych pikseli
+                            color_rgb = tuple(np.median(valid_pixels, axis=0).astype(int))
+                        else:
+                            # Jeśli wszystkie piksele są czarne, użyj średniej z całego obszaru
+                            color_rgb = tuple(np.median(roi_flat, axis=0).astype(int))
+                    else:
+                        # Fallback: użyj koloru z katalogu jeśli nie udało się wyekstrahować
+                        color_rgb = get_color_for_pencil(num, name)
                     color = HexColor(f"#{color_rgb[0]:02x}{color_rgb[1]:02x}{color_rgb[2]:02x}")
                     
                     # Kwadracik na dole - 9mm x 9mm (sample_size jest już zdefiniowane w funkcji)

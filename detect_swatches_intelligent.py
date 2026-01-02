@@ -135,10 +135,10 @@ def detect_swatch_regions_by_color(img_rgb, target_col_start=400, target_col_wid
             in_line = False
     
     # Równomierny podział na podstawie oczekiwanej liczby próbek
-    # NIE pomijaj górnego paska - dziel od y=0
-    # Pomijaj dolny margines (40px)
-    bottom_margin = 40
-    total_height = height - bottom_margin
+    # Pomijaj górny margines (4px) i dolny margines (35px)
+    top_margin = 4
+    bottom_margin = 35
+    total_height = height - bottom_margin - top_margin
     
     # Oblicz DOKŁADNĄ wysokość i szerokość - wszystkie próbki mają identyczne wymiary
     swatch_height = int(total_height / num_swatches)  # Dokładna wysokość (zaokrąglona w dół)
@@ -147,8 +147,8 @@ def detect_swatch_regions_by_color(img_rgb, target_col_start=400, target_col_wid
     
     swatches = []
     for i in range(num_swatches):
-        y_start = int(i * swatch_height)
-        y_end = int((i + 1) * swatch_height)
+        y_start = top_margin + int(i * swatch_height)  # Zaczynaj od top_margin
+        y_end = top_margin + int((i + 1) * swatch_height)
         h = swatch_height  # Użyj dokładnej wysokości (nie obliczonej z różnicy)
         x_actual = target_col_start + margin_x
         w_actual = swatch_width  # Użyj dokładnej szerokości
