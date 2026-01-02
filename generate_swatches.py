@@ -1391,21 +1391,29 @@ def generate_portrait_with_photo(colors, output_filename, photo_path, title="Koh
                 c.drawString(-polish_text_width / 2, 0, polish_name)
                 c.restoreState()
             
-            # Numer
+            # Numer porządkowy (poziomy, tuż pod kredką)
             c.setFont("Helvetica-Bold", 9)
-            num_text = f"3800/{num:03d}"
-            num_text_width = c.stringWidth(num_text, "Helvetica-Bold", 9)
-            num_text_x = center_x_pdf - num_text_width / 2
-            num_text_y = swatch_y - 5 * mm
-            c.drawString(num_text_x, num_text_y, num_text)
-            
-            # Numer porządkowy
-            c.setFont("Helvetica", 8)
+            c.setFillColor(black)
             order_text = str(order_num)
-            order_text_width = c.stringWidth(order_text, "Helvetica", 8)
-            order_text_x = center_x_pdf - order_text_width / 2
-            order_text_y = swatch_y - 12 * mm
-            c.drawString(order_text_x, order_text_y, order_text)
+            order_text_width = c.stringWidth(order_text, "Helvetica-Bold", 9)
+            c.drawString(center_x_pdf - order_text_width / 2, swatch_y - 4 * mm, order_text)
+            
+            # Numer 3800/nr (pionowo, obrócona o 90 stopni, na dole)
+            c.setFont("Helvetica-Bold", 8)
+            c.setFillColor(black)
+            num_text = f"3800/{num:02d}"  # Zera wiodące: 3800/01, 3800/02, etc.
+            
+            # Pozycja dla obróconego numeru - na dole, wyśrodkowany
+            num_text_width = c.stringWidth(num_text, "Helvetica-Bold", 8)
+            num_text_x = center_x_pdf
+            num_text_y = swatch_y - 8 * mm - num_text_width / 2  # jeszcze niżej, pod numerem porządkowym
+            
+            c.saveState()
+            c.setFillColor(black)
+            c.translate(num_text_x, num_text_y)
+            c.rotate(90)
+            c.drawString(-num_text_width / 2, 0, num_text)
+            c.restoreState()
             
             # NAJPIERW wstaw obraz ze zdjęcia (tło), POTEM próbkę koloru (nakładka półprzezroczysta)
             # Użyj inteligentnie wykrytego obszaru - DLA WSZYSTKICH KOLORÓW
@@ -1433,6 +1441,11 @@ def generate_portrait_with_photo(colors, output_filename, photo_path, title="Koh
                 roi = img_rgb[y_start:y_end, x_start:x_end]
                 
                 if roi.size > 0:
+                    # PREPROCESSING: Rozjaśnij i zwiększ kontrast obrazu, aby poprawić ekstrakcję kolorów
+                    # (szczególnie ważne dla jasnych kolorów jak biały, które mogą być zbyt ciemne na zdjęciu)
+                    alpha = 1.2  # Kontrast (1.0 = bez zmian, >1.0 = większy kontrast)
+                    beta = 25    # Jasność (0 = bez zmian, >0 = jaśniejsze)
+                    roi = cv2.convertScaleAbs(roi, alpha=alpha, beta=beta)
                     # DODATKOWE filtrowanie - usuń wszystkie czarne i ciemne piksele z wyciętego obszaru
                     # SPECJALNA OBSŁUGA dla białego koloru (kredka 1) - nie filtruj szarych pikseli!
                     roi_cleaned = roi.copy()
@@ -1514,33 +1527,25 @@ def generate_portrait_with_photo(colors, output_filename, photo_path, title="Koh
                     photo_width = swatch_width  # Ta sama szerokość co próbka
                     photo_height = swatch_height  # Ta sama wysokość co próbka
                     
-                    # Oblicz skalę zachowując proporcje (dla obróconego obrazu)
+                    # Skaluj próbki do szerokości 8mm, zachowując proporcje
                     roi_width, roi_height = roi_pil_rotated.size
                     if roi_width > 0 and roi_height > 0:
-                        # Użyj pełnej szerokości i wysokości próbki (bez skalowania w dół)
-                        # Obraz powinien wypełnić całą próbkę
                         try:
-                            # Narysuj wycięty prostokąt - użyj pełnej szerokości i wysokości próbki
-                            # NIE skalować - użyj dokładnie rozmiaru próbki
                             # Sprawdź czy plik istnieje przed wstawieniem
                             if os.path.exists(temp_file):
-                                # Wstaw obraz w oryginalnej skali (zachowując proporcje)
-                                # Skaluj tak, aby obraz zmieścił się w próbce, zachowując proporcje
-                                scale_w = photo_width / roi_width
-                                scale_h = photo_height / roi_height
-                                scale = min(scale_w, scale_h)  # Użyj min, aby obraz zmieścił się w próbce
-                                
-                                scaled_width = roi_width * scale
-                                scaled_height = roi_height * scale
+                                # Ustaw szerokość na 8mm, wysokość oblicz zachowując proporcje
+                                target_width = 8 * mm  # 8mm w punktach ReportLab
+                                scale = target_width / roi_width
+                                target_height = roi_height * scale
                                 
                                 # Wyśrodkuj w obszarze próbki
-                                photo_x_centered = photo_x + (photo_width - scaled_width) / 2
-                                photo_y_centered = photo_y + (photo_height - scaled_height) / 2
+                                photo_x_centered = photo_x + (photo_width - target_width) / 2
+                                photo_y_centered = photo_y + (photo_height - target_height) / 2 - 20 * mm  # Przesunięcie wycinków w dół o 2 cm
                                 
                                 c.drawImage(temp_file, photo_x_centered, photo_y_centered,
-                                           width=scaled_width, height=scaled_height, preserveAspectRatio=True)
+                                           width=target_width, height=target_height, preserveAspectRatio=True)
                                 
-                                print(f"  ✓ Wstawiono próbkę dla kredki {num:03d} (rozmiar: {scaled_width:.1f}x{scaled_height:.1f}mm)")
+                                print(f"  ✓ Wstawiono próbkę dla kredki {num:03d} (szerokość: 8mm, wysokość: {target_height/mm:.1f}mm)")
                             else:
                                 print(f"  ✗ Błąd: Plik {temp_file} nie istnieje dla kredki {num:03d}")
                         except Exception as e:

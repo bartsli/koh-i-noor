@@ -161,3 +161,4 @@ if __name__ == "__main__":
         print("Rekomendacja: Użyj mediany - bardziej odporna na outliers")
         print(f"  RGB{result['median']}")
 
+
