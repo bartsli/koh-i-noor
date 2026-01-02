@@ -1,0 +1,458 @@
+{
+  "1": {
+    "current_printed": [
+      181,
+      179,
+      177
+    ],
+    "real_from_photo": [
+      173,
+      172,
+      168
+    ],
+    "normalized_target": [
+      255,
+      255,
+      255
+    ],
+    "difference": 13.92838827718412,
+    "needs_correction": false
+  },
+  "3": {
+    "current_printed": [
+      195,
+      185,
+      132
+    ],
+    "real_from_photo": [
+      203,
+      192,
+      87
+    ],
+    "normalized_target": [
+      255,
+      255,
+      132
+    ],
+    "difference": 46.238512086787566,
+    "needs_correction": true
+  },
+  "5": {
+    "current_printed": [
+      183,
+      162,
+      134
+    ],
+    "real_from_photo": [
+      207,
+      148,
+      100
+    ],
+    "normalized_target": [
+      255,
+      219,
+      151
+    ],
+    "difference": 43.9089968002003,
+    "needs_correction": true
+  },
+  "6": {
+    "current_printed": [
+      180,
+      149,
+      129
+    ],
+    "real_from_photo": [
+      203,
+      127,
+      95
+    ],
+    "normalized_target": [
+      255,
+      188,
+      144
+    ],
+    "difference": 46.57252408878007,
+    "needs_correction": true
+  },
+  "8": {
+    "current_printed": [
+      143,
+      122,
+      136
+    ],
+    "real_from_photo": [
+      154,
+      93,
+      110
+    ],
+    "normalized_target": [
+      226,
+      137,
+      166
+    ],
+    "difference": 40.47221268969612,
+    "needs_correction": true
+  },
+  "28": {
+    "current_printed": [
+      192,
+      183,
+      120
+    ],
+    "real_from_photo": [
+      198,
+      179,
+      84
+    ],
+    "normalized_target": [
+      255,
+      255,
+      127
+    ],
+    "difference": 36.71511950137164,
+    "needs_correction": true
+  },
+  "41": {
+    "current_printed": [
+      172,
+      170,
+      158
+    ],
+    "real_from_photo": [
+      199,
+      194,
+      136
+    ],
+    "normalized_target": [
+      255,
+      255,
+      206
+    ],
+    "difference": 42.2965719651132,
+    "needs_correction": true
+  },
+  "42": {
+    "current_printed": [
+      192,
+      179,
+      135
+    ],
+    "real_from_photo": [
+      200,
+      155,
+      91
+    ],
+    "normalized_target": [
+      255,
+      229,
+      138
+    ],
+    "difference": 50.75431016179808,
+    "needs_correction": true
+  },
+  "44": {
+    "current_printed": [
+      191,
+      179,
+      135
+    ],
+    "real_from_photo": [
+      198,
+      160,
+      98
+    ],
+    "normalized_target": [
+      255,
+      237,
+      148
+    ],
+    "difference": 42.17819341792628,
+    "needs_correction": true
+  },
+  "45": {
+    "current_printed": [
+      195,
+      184,
+      123
+    ],
+    "real_from_photo": [
+      205,
+      168,
+      86
+    ],
+    "normalized_target": [
+      255,
+      249,
+      130
+    ],
+    "difference": 41.53311931459037,
+    "needs_correction": true
+  },
+  "126": {
+    "current_printed": [
+      189,
+      167,
+      117
+    ],
+    "real_from_photo": [
+      203,
+      144,
+      76
+    ],
+    "normalized_target": [
+      255,
+      213,
+      115
+    ],
+    "difference": 49.05099387372289,
+    "needs_correction": true
+  },
+  "131": {
+    "current_printed": [
+      187,
+      175,
+      164
+    ],
+    "real_from_photo": [
+      196,
+      143,
+      140
+    ],
+    "normalized_target": [
+      255,
+      212,
+      212
+    ],
+    "difference": 41.0,
+    "needs_correction": true
+  },
+  "132": {
+    "current_printed": [
+      163,
+      110,
+      110
+    ],
+    "real_from_photo": [
+      171,
+      85,
+      93
+    ],
+    "normalized_target": [
+      252,
+      126,
+      141
+    ],
+    "difference": 31.272991542223778,
+    "needs_correction": true
+  },
+  "170": {
+    "current_printed": [
+      175,
+      139,
+      129
+    ],
+    "real_from_photo": [
+      197,
+      110,
+      100
+    ],
+    "normalized_target": [
+      255,
+      163,
+      151
+    ],
+    "difference": 46.54030511288038,
+    "needs_correction": true
+  },
+  "177": {
+    "current_printed": [
+      159,
+      123,
+      129
+    ],
+    "real_from_photo": [
+      155,
+      93,
+      118
+    ],
+    "normalized_target": [
+      228,
+      137,
+      179
+    ],
+    "difference": 32.202484376209235,
+    "needs_correction": true
+  },
+  "178": {
+    "current_printed": [
+      163,
+      125,
+      141
+    ],
+    "real_from_photo": [
+      162,
+      114,
+      150
+    ],
+    "normalized_target": [
+      238,
+      169,
+      227
+    ],
+    "difference": 14.247806848775006,
+    "needs_correction": false
+  },
+  "180": {
+    "current_printed": [
+      156,
+      150,
+      161
+    ],
+    "real_from_photo": [
+      114,
+      96,
+      128
+    ],
+    "normalized_target": [
+      168,
+      142,
+      194
+    ],
+    "difference": 75.95393340703298,
+    "needs_correction": true
+  },
+  "182": {
+    "current_printed": [
+      132,
+      119,
+      143
+    ],
+    "real_from_photo": [
+      120,
+      98,
+      136
+    ],
+    "normalized_target": [
+      176,
+      145,
+      206
+    ],
+    "difference": 25.179356624028344,
+    "needs_correction": true
+  },
+  "357": {
+    "current_printed": [
+      182,
+      169,
+      161
+    ],
+    "real_from_photo": [
+      207,
+      175,
+      131
+    ],
+    "normalized_target": [
+      255,
+      255,
+      198
+    ],
+    "difference": 39.50949253027682,
+    "needs_correction": true
+  },
+  "504": {
+    "current_printed": [
+      192,
+      186,
+      156
+    ],
+    "real_from_photo": [
+      199,
+      196,
+      120
+    ],
+    "normalized_target": [
+      255,
+      255,
+      182
+    ],
+    "difference": 38.01315561749642,
+    "needs_correction": true
+  },
+  "558": {
+    "current_printed": [
+      194,
+      186,
+      151
+    ],
+    "real_from_photo": [
+      205,
+      164,
+      108
+    ],
+    "normalized_target": [
+      255,
+      243,
+      163
+    ],
+    "difference": 49.53786430600334,
+    "needs_correction": true
+  },
+  "601": {
+    "current_printed": [
+      173,
+      124,
+      118
+    ],
+    "real_from_photo": [
+      186,
+      101,
+      95
+    ],
+    "normalized_target": [
+      255,
+      149,
+      144
+    ],
+    "difference": 35.02855977627399,
+    "needs_correction": true
+  },
+  "603": {
+    "current_printed": [
+      159,
+      124,
+      120
+    ],
+    "real_from_photo": [
+      163,
+      95,
+      87
+    ],
+    "normalized_target": [
+      240,
+      140,
+      132
+    ],
+    "difference": 44.11349000022555,
+    "needs_correction": true
+  },
+  "801": {
+    "current_printed": [
+      194,
+      186,
+      138
+    ],
+    "real_from_photo": [
+      202,
+      191,
+      102
+    ],
+    "normalized_target": [
+      255,
+      255,
+      154
+    ],
+    "difference": 37.21558813185679,
+    "needs_correction": true
+  }
+}

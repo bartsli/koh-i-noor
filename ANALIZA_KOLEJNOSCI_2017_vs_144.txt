@@ -1,0 +1,105 @@
+================================================================================
+ANALIZA KOLEJNOŚCI: KATALOG 2017 vs KATALOG 144
+================================================================================
+
+WNIOSEK: KOLEJNOŚĆ NIE JEST SPÓJNA
+
+Katalog 2017 używa innej kolejności niż katalog 144.
+Katalog 144: kolejność katalogowa (numeryczna)
+Katalog 2017: prawdopodobnie kolejność tonalna/logiczna
+
+================================================================================
+PORÓWNANIE KOLEJNOŚCI
+================================================================================
+
+Pozycja w 2017  Numer      Nazwa                          Pozycja w 144   Status
+--------------------------------------------------------------------------------
+1               1          White                          1               ✓ OK
+2               41         Cream                          5               ✓ OK
+3               2          Light Yellow                   BRAK            -
+4               3          Yellow                         7               ✓ OK
+5               4          Dark Yellow                    BRAK            -
+6               43         Canary Yellow                  BRAK            -
+7               44         Naples Yellow                  14              ✓ OK
+8               9          Beige                          BRAK            -
+9               45         Light Orange                   13              ✓ OK
+10              67         Cadmium Orange                 BRAK            -
+11              126        Dark Orange                    17              ✓ OK
+12              42         Orange Yellow                  15              ✗ ODWRÓCONA
+13              5          Orange                         18              ✓ OK
+14              47         Scarlet Red                    BRAK            -
+15              132        Cherry Red                     27              ✓ OK
+16              6          Vermilion                      21              ✗ ODWRÓCONA
+17              48         Carmine Red                    BRAK            -
+18              30         Indian Red                     116             ✓ OK
+19              170        Carmine                        23              ✗ ODWRÓCONA
+20              8          Bordeaux-Red                   54              ✓ OK
+21              131        Pink                           31              ✗ ODWRÓCONA
+22              177        Light Violet                   53              ✓ OK
+23              178        Red Violet                     50              ✗ ODWRÓCONA
+24              13         Violet                         58              ✓ OK
+25              180        Windsor Violet                 57              ✗ ODWRÓCONA
+26              179        Permanent Violet               59              ✓ OK
+27              181        Blue Violet                    60              ✓ OK
+28              182        Delft Blue                     56              ✗ ODWRÓCONA
+29              57         Mountain Blue                  74              ✓ OK
+30              15         Ice Blue                       78              ✓ OK
+31              16         Sky Blue                       76              ✗ ODWRÓCONA
+32              52         Azure Blue                     71              ✗ ODWRÓCONA
+33              53         Phthalo Blue                   70              ✗ ODWRÓCONA
+34              18         Light Blue                     72              ✓ OK
+35              54         Cobalt Dark                    68              ✗ ODWRÓCONA
+36              17         Cobalt Blue                    62              ✗ ODWRÓCONA
+37              19         Dark Blue                      66              ✓ OK
+38              55         Permanent Blue                 64              ✗ ODWRÓCONA
+39              20         Prussian Blue                  73              ✓ OK
+40              56         Indigo Blue                    63              ✗ ODWRÓCONA
+41              22         Bice Green                     98              ✓ OK
+42              62         Apple Green                    101             ✓ OK
+43              58         Light Green                    96              ✗ ODWRÓCONA
+44              23         May Green                      97              ✓ OK
+45              24         Pea Green                      95              ✗ ODWRÓCONA
+46              25         Grass Green                    103             ✓ OK
+47              61         Sap Green                      87              ✗ ODWRÓCONA
+48              59         Grass Green Dark               88              ✓ OK
+49              60         Emerald Green                  89              ✓ OK
+50              21         Blue Green                     90              ✓ OK
+51              26         Dark Green                     85              ✗ ODWRÓCONA
+52              63         Olive Green Light              104             ✓ OK
+53              27         Dark Olive Green               105             ✓ OK
+54              28         Gold Ochre                     9               ✗ ODWRÓCONA
+55              29         Dark Ochre                     108             ✓ OK
+56              66         Raw Umber                      106             ✗ ODWRÓCONA
+57              64         Burnt Ochre                    113             ✓ OK
+58              32         Brown                          121             ✓ OK
+59              31         Light Brown                    119             ✗ ODWRÓCONA
+60              65         Terracotta                     118             ✗ ODWRÓCONA
+61              33         Dark Brown                     122             ✓ OK
+62              68         Burnt Umber                    125             ✓ OK
+63              69         Light Grey                     BRAK            -
+64              35         Grey                           BRAK            -
+65              34         Bluish Grey                    129             ✓ OK
+66              71         Medium Grey                    131             ✓ OK
+67              72         Slate Grey                     130             ✗ ODWRÓCONA
+68              38         Cold Grey                      BRAK            -
+69              70         Dark Grey                      BRAK            -
+70              36         Black                          143             ✓ OK
+71              39         Silver                         128             ✗ ODWRÓCONA
+72              40         Gold                           127             ✗ ODWRÓCONA
+
+================================================================================
+STATYSTYKA
+================================================================================
+  • Kolory z 2017 występujące w 144: 61
+  • Kolory z 2017 NIE występujące w 144: 11
+  • Naruszenia kolejności: 25
+  • Procent zachowania kolejności: 64.8%
+
+================================================================================
+WNIOSEK
+================================================================================
+Katalog 2017 używa KOLEJNOŚCI TONALNEJ/LOGICZNEJ (kolory pogrupowane
+według odcieni i tonów), a nie kolejności katalogowej (numerycznej).
+Dlatego kolejność kolorów w katalogu 2017 różni się od kolejności
+w katalogu 144, który jest uporządkowany numerycznie.
+================================================================================

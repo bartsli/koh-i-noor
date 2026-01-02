@@ -1,0 +1,249 @@
+================================================================================
+ZESTAWIENIE: KATALOG 2017 (72 kolory) vs KATALOG 144 KOLORÓW
+================================================================================
+
+Kolory w katalogu 2017: 72
+Kolory w katalogu 144: 144
+
+================================================================================
+PORÓWNANIE NUMERÓW I NAZW
+================================================================================
+
+1. KOLORY WYSTĘPUJĄCE W OBIU KATALOGACH (zgodne numery)
+--------------------------------------------------------------------------------
+  3800/001 - White                          ⚠ (w 144: Titanium White)
+  3800/003 - Yellow                         ⚠ (w 144: Chrome Yellow)
+  3800/005 - Orange                         ⚠ (w 144: Reddish Orange)
+  3800/006 - Vermilion                      ⚠ (w 144: Vermilion Red)
+  3800/008 - Bordeaux-Red                   ⚠ (w 144: Bordeaux Red)
+  3800/013 - Violet                         ⚠ (w 144: Lavender Violet)
+  3800/015 - Ice Blue                       ✓
+  3800/016 - Sky Blue                       ⚠ (w 144: Cerulean Blue)
+  3800/017 - Cobalt Blue                    ✓
+  3800/018 - Light Blue                     ✓
+  3800/019 - Dark Blue                      ⚠ (w 144: Sapphire Blue)
+  3800/020 - Prussian Blue                  ✓
+  3800/021 - Blue Green                     ⚠ (w 144: Bluish Green)
+  3800/022 - Bice Green                     ⚠ (w 144: Yellowish Green)
+  3800/023 - May Green                      ⚠ (w 144: Spring Green)
+  3800/024 - Pea Green                      ✓
+  3800/025 - Grass Green                    ⚠ (w 144: Meadow Green)
+  3800/026 - Dark Green                     ✓
+  3800/027 - Dark Olive Green               ✓
+  3800/028 - Gold Ochre                     ✓
+  3800/029 - Dark Ochre                     ⚠ (w 144: Light Ochre)
+  3800/030 - Indian Red                     ⚠ (w 144: Reddish Brown)
+  3800/031 - Light Brown                    ✓
+  3800/032 - Brown                          ⚠ (w 144: Natural Sienna)
+  3800/033 - Dark Brown                     ✓
+  3800/034 - Bluish Grey                    ⚠ (w 144: Light Bluish Grey)
+  3800/036 - Black                          ⚠ (w 144: Ivory Black)
+  3800/039 - Silver                         ⚠ (w 144: Standard Silver)
+  3800/040 - Gold                           ⚠ (w 144: Standard Gold)
+  3800/041 - Cream                          ⚠ (w 144: Banana Yellow)
+  3800/042 - Orange Yellow                  ⚠ (w 144: Chromium Orange)
+  3800/044 - Naples Yellow                  ✓
+  3800/045 - Light Orange                   ✓
+  3800/052 - Azure Blue                     ⚠ (w 144: Dark Ice Blue)
+  3800/053 - Phthalo Blue                   ✓
+  3800/054 - Cobalt Dark                    ⚠ (w 144: Dark Cobalt Blue)
+  3800/055 - Permanent Blue                 ✓
+  3800/056 - Indigo Blue                    ✓
+  3800/057 - Mountain Blue                  ✓
+  3800/058 - Light Green                    ✓
+  3800/059 - Grass Green Dark               ⚠ (w 144: Grass Green)
+  3800/060 - Emerald Green                  ✓
+  3800/061 - Sap Green                      ✓
+  3800/062 - Apple Green                    ✓
+  3800/063 - Olive Green Light              ⚠ (w 144: Light Olive Green)
+  3800/064 - Burnt Ochre                    ✓
+  3800/065 - Terracotta                     ⚠ (w 144: Medium Terracotta)
+  3800/066 - Raw Umber                      ✓
+  3800/068 - Burnt Umber                    ✓
+  3800/071 - Medium Grey                    ✓
+  3800/072 - Slate Grey                     ✓
+  3800/126 - Dark Orange                    ⚠ (w 144: Persian Orange)
+  3800/131 - Pink                           ⚠ (w 144: French Pink)
+  3800/132 - Cherry Red                     ⚠ (w 144: Carmine Red)
+  3800/170 - Carmine                        ⚠ (w 144: Pyrrole Red)
+  3800/177 - Light Violet                   ⚠ (w 144: Lilac Violet)
+  3800/178 - Red Violet                     ⚠ (w 144: Reddish Violet)
+  3800/179 - Permanent Violet               ⚠ (w 144: Bluish Violet)
+  3800/180 - Windsor Violet                 ⚠ (w 144: Dark Lavender Violet)
+  3800/181 - Blue Violet                    ⚠ (w 144: Windsor Violet)
+  3800/182 - Delft Blue                     ⚠ (w 144: Dark Violet)
+
+   RAZEM: 61 kolorów
+
+2. KOLORY Z RÓŻNYMI NAZWAMI (ten sam numer, różna nazwa)
+--------------------------------------------------------------------------------
+  3800/001
+    Katalog 2017: White
+    Katalog 144:  Titanium White
+
+  3800/003
+    Katalog 2017: Yellow
+    Katalog 144:  Chrome Yellow
+
+  3800/005
+    Katalog 2017: Orange
+    Katalog 144:  Reddish Orange
+
+  3800/006
+    Katalog 2017: Vermilion
+    Katalog 144:  Vermilion Red
+
+  3800/008
+    Katalog 2017: Bordeaux-Red
+    Katalog 144:  Bordeaux Red
+
+  3800/013
+    Katalog 2017: Violet
+    Katalog 144:  Lavender Violet
+
+  3800/016
+    Katalog 2017: Sky Blue
+    Katalog 144:  Cerulean Blue
+
+  3800/019
+    Katalog 2017: Dark Blue
+    Katalog 144:  Sapphire Blue
+
+  3800/021
+    Katalog 2017: Blue Green
+    Katalog 144:  Bluish Green
+
+  3800/022
+    Katalog 2017: Bice Green
+    Katalog 144:  Yellowish Green
+
+  3800/023
+    Katalog 2017: May Green
+    Katalog 144:  Spring Green
+
+  3800/025
+    Katalog 2017: Grass Green
+    Katalog 144:  Meadow Green
+
+  3800/029
+    Katalog 2017: Dark Ochre
+    Katalog 144:  Light Ochre
+
+  3800/030
+    Katalog 2017: Indian Red
+    Katalog 144:  Reddish Brown
+
+  3800/032
+    Katalog 2017: Brown
+    Katalog 144:  Natural Sienna
+
+  3800/034
+    Katalog 2017: Bluish Grey
+    Katalog 144:  Light Bluish Grey
+
+  3800/036
+    Katalog 2017: Black
+    Katalog 144:  Ivory Black
+
+  3800/039
+    Katalog 2017: Silver
+    Katalog 144:  Standard Silver
+
+  3800/040
+    Katalog 2017: Gold
+    Katalog 144:  Standard Gold
+
+  3800/041
+    Katalog 2017: Cream
+    Katalog 144:  Banana Yellow
+
+  3800/042
+    Katalog 2017: Orange Yellow
+    Katalog 144:  Chromium Orange
+
+  3800/052
+    Katalog 2017: Azure Blue
+    Katalog 144:  Dark Ice Blue
+
+  3800/054
+    Katalog 2017: Cobalt Dark
+    Katalog 144:  Dark Cobalt Blue
+
+  3800/059
+    Katalog 2017: Grass Green Dark
+    Katalog 144:  Grass Green
+
+  3800/063
+    Katalog 2017: Olive Green Light
+    Katalog 144:  Light Olive Green
+
+  3800/065
+    Katalog 2017: Terracotta
+    Katalog 144:  Medium Terracotta
+
+  3800/126
+    Katalog 2017: Dark Orange
+    Katalog 144:  Persian Orange
+
+  3800/131
+    Katalog 2017: Pink
+    Katalog 144:  French Pink
+
+  3800/132
+    Katalog 2017: Cherry Red
+    Katalog 144:  Carmine Red
+
+  3800/170
+    Katalog 2017: Carmine
+    Katalog 144:  Pyrrole Red
+
+  3800/177
+    Katalog 2017: Light Violet
+    Katalog 144:  Lilac Violet
+
+  3800/178
+    Katalog 2017: Red Violet
+    Katalog 144:  Reddish Violet
+
+  3800/179
+    Katalog 2017: Permanent Violet
+    Katalog 144:  Bluish Violet
+
+  3800/180
+    Katalog 2017: Windsor Violet
+    Katalog 144:  Dark Lavender Violet
+
+  3800/181
+    Katalog 2017: Blue Violet
+    Katalog 144:  Windsor Violet
+
+  3800/182
+    Katalog 2017: Delft Blue
+    Katalog 144:  Dark Violet
+
+   RAZEM: 36 kolorów z różnicami w nazwach
+
+3. KOLORY Z KATALOGU 2017, KTÓRE NIE WYSTĘPUJĄ W KATALOGU 144
+--------------------------------------------------------------------------------
+  3800/002 - Light Yellow
+  3800/004 - Dark Yellow
+  3800/009 - Beige
+  3800/035 - Grey
+  3800/038 - Cold Grey
+  3800/043 - Canary Yellow
+  3800/047 - Scarlet Red
+  3800/048 - Carmine Red
+  3800/067 - Cadmium Orange
+  3800/069 - Light Grey
+  3800/070 - Dark Grey
+
+   RAZEM: 11 kolorów
+
+================================================================================
+PODSUMOWANIE
+================================================================================
+  • Kolory w obu katalogach (zgodne): 61
+  • Kolory z różnymi nazwami: 36
+  • Kolory tylko w katalogu 2017: 11
+  • Kolory tylko w katalogu 144: 83
+================================================================================

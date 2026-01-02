@@ -1,0 +1,95 @@
+================================================================================
+ANALIZA ZAMIENNIKÓW: 11 KOLORÓW Z KATALOGU 2017
+================================================================================
+
+Dla każdego koloru z katalogu 2017, który nie występuje w katalogu 144,
+przeanalizowano możliwe zamienniki na podstawie podobieństwa nazw.
+
+================================================================================
+
+3800/002 - Light Yellow
+  ✓ Znaleziono 3 możliwych zamienników:
+    → 3800/501 - Pollen Yellow                  (jasna żółć)
+    → 3800/041 - Banana Yellow                  (jasna żółć)
+    → 3800/504 - Lemon Yellow                   (jasna żółć)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/501 - Pollen Yellow
+
+3800/004 - Dark Yellow
+  ✓ Znaleziono 4 możliwych zamienników:
+    → 3800/003 - Chrome Yellow                  (ciemna żółć)
+    → 3800/801 - Yellow Ochre                   (ciemna żółć)
+    → 3800/802 - Dark Yellow Ochre              (ciemna żółć)
+    → 3800/803 - Yellow Brown Ochre             (ciemna żółć)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/003 - Chrome Yellow
+
+3800/009 - Beige
+  ✓ Znaleziono 11 możliwych zamienników:
+    → 3800/500 - Ivory Bone                     (beżowy/cielisty)
+    → 3800/550 - Fair Portrait Gold             (beżowy/cielisty)
+    → 3800/821 - Almond Brown                   (beżowy/cielisty)
+    → 3800/553 - Portrait Sand                  (beżowy/cielisty)
+    → 3800/350 - Portrait Peach                 (beżowy/cielisty)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/500 - Ivory Bone
+
+3800/035 - Grey
+  ✓ Znaleziono 3 możliwych zamienników:
+    → 3800/034 - Light Bluish Grey              (neutralna szarość)
+    → 3800/072 - Slate Grey                     (neutralna szarość)
+    → 3800/071 - Medium Grey                    (neutralna szarość)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/034 - Light Bluish Grey
+
+3800/038 - Cold Grey
+  ✓ Znaleziono 6 możliwych zamienników:
+    → 3800/408 - Cool Grey 8                    (chłodna szarość)
+    → 3800/406 - Cool Grey 6                    (chłodna szarość)
+    → 3800/405 - Cool Grey 5                    (chłodna szarość)
+    → 3800/403 - Cool Grey 3                    (chłodna szarość)
+    → 3800/401 - Cool Grey 1                    (chłodna szarość)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/408 - Cool Grey 8
+
+3800/043 - Canary Yellow
+  ✓ Znaleziono 2 możliwych zamienników:
+    → 3800/501 - Pollen Yellow                  (jasna żółć)
+    → 3800/504 - Lemon Yellow                   (jasna żółć)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/501 - Pollen Yellow
+
+3800/047 - Scarlet Red
+  ✓ Znaleziono 2 możliwych zamienników:
+    → 3800/600 - Light Scarlet Red              (szkarłatna czerwień)
+    → 3800/601 - Scarlet Red                    (szkarłatna czerwień)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/600 - Light Scarlet Red
+
+3800/048 - Carmine Red
+  ✓ Znaleziono 2 możliwych zamienników:
+    → 3800/132 - Carmine Red                    (karminowa czerwień)
+    → 3800/610 - Light Carmine Red              (karminowa czerwień)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/132 - Carmine Red
+
+3800/067 - Cadmium Orange
+  ✓ Znaleziono 12 możliwych zamienników:
+    → 3800/555 - Papaya Orange                  (pomarańcz)
+    → 3800/556 - Amber Orange                   (pomarańcz)
+    → 3800/557 - Tangerine Orange               (pomarańcz)
+    → 3800/045 - Light Orange                   (pomarańcz)
+    → 3800/042 - Chromium Orange                (pomarańcz)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/555 - Papaya Orange
+
+3800/069 - Light Grey
+  ✓ Znaleziono 1 możliwych zamienników:
+    → 3800/034 - Light Bluish Grey              (jasna szarość)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/034 - Light Bluish Grey
+
+3800/070 - Dark Grey
+  ✓ Znaleziono 3 możliwych zamienników:
+    → 3800/072 - Slate Grey                     (ciemna szarość)
+    → 3800/408 - Cool Grey 8                    (ciemna szarość)
+    → 3800/409 - Cool Grey 9                    (ciemna szarość)
+  ★ NAJLEPSZY ZAMIENNIK: 3800/072 - Slate Grey
+
+================================================================================
+PODSUMOWANIE
+================================================================================
+  • Kolory z możliwymi zamiennikami: 11
+  • Kolory bez zamienników: 0
+  • RAZEM analizowanych kolorów: 11
+================================================================================
